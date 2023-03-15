@@ -1,4 +1,4 @@
-# Transacta - Unified Cross-ZK bridge
+# Transacta - Unified Cross-ZK NFT bridge and metadata relayer
 
 Bridge your NFTs with ease, [OnGrid](https://ongrid.pro/)'s cross-chain expertise!
 
