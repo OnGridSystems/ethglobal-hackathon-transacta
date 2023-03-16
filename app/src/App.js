@@ -1,25 +1,15 @@
-import logo from "./logo.svg";
-import "./App.css";
 import TokensList from "./components/TokensList";
+import Web3Status from './Web3Status/Web3Status';
+import useConnection from './hooks/useConnection';
 
 function App() {
+  const { userAddress, connectWallet } = useConnection();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <TokensList />
-      </header>
+    <div className='App'>
+      <Web3Status userAddress={userAddress} connectWallet={connectWallet} />
+      <TokensList />
+
     </div>
   );
 }
