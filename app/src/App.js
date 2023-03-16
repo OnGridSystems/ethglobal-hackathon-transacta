@@ -1,15 +1,28 @@
-import TokensList from "./components/TokensList";
-import Web3Status from './Web3Status/Web3Status';
+import TokensList from './components/TokensList';
 import useConnection from './hooks/useConnection';
+import Header from './components/Header';
+import styled from '@emotion/styled';
+
+const Container = styled('div')({
+  maxWidth: '1200px',
+  margin: '40px auto',
+});
 
 function App() {
-  const { userAddress, connectWallet } = useConnection();
+  const { userAddress, connectWallet, switchNetwork, chainId } =
+    useConnection();
 
   return (
     <div className='App'>
-      <Web3Status userAddress={userAddress} connectWallet={connectWallet} />
-      <TokensList />
-
+      <Header
+        chainId={chainId}
+        userAddress={userAddress}
+        connectWallet={connectWallet}
+        switchNetwork={switchNetwork}
+      />
+      <Container>
+        <TokensList />
+      </Container>
     </div>
   );
 }
