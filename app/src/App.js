@@ -1,6 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
-import TokenCard from "./components/TokenCard";
+import TokensList from "./components/TokensList";
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
         >
           Learn React
         </a>
-        <TokenCard />
+        <TokensList />
       </header>
     </div>
   );
