@@ -41,14 +41,12 @@ const useConnection = () => {
       });
       return true;
     } catch (error) {
-      // This error code indicates that the chain has not been added to MetaMask.
       if (error.code === 4902) {
         try {
           await window.ethereum.request({
             method: 'wallet_addEthereumChain',
             params: [networks[chainIdConnect].params],
           });
-          return true;
         } catch (error) {
           console.error(error);
           return false;
