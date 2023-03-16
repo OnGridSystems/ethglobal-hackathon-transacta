@@ -11,11 +11,8 @@ import Avatar from "@mui/material/Avatar";
 import { deepOrange } from "@mui/material/colors";
 import { shortenAddress } from "../utils";
 
-const networksLogos = {
-  42: "/img/networks/mainnet.svg",
-  97: "/img/networks/BSC.svg",
-  80001: "/img/networks/polygon.svg",
-};
+import { networksLogos } from "../constants";
+import networks from "../networks.json";
 
 function TokenCard({
   tokenId = 0,
@@ -23,10 +20,13 @@ function TokenCard({
   image,
   chainId = 97,
   skill = 0,
+  setCurrentItem,
+  toggleModal,
+  hasButton,
 }) {
   return (
     <Card sx={{ width: 250 }}>
-      <CardMedia sx={{ height: 200 }} image={image} title="green iguana" />
+      <CardMedia sx={{ height: 200 }} image={image} title="token image" />
       <CardContent sx={{ position: "relative" }}>
         <Avatar
           sx={{
@@ -35,11 +35,9 @@ function TokenCard({
             right: 10,
             top: 0,
           }}
-          alt="network logo"
+          alt={`${networks[chainId].name} network logo`}
           src={networksLogos[chainId]}
-        >
-          BS
-        </Avatar>
+        />
         <Typography gutterBottom variant="h5" component="div" align="left">
           Cool Token #{tokenId}
         </Typography>
@@ -59,7 +57,7 @@ function TokenCard({
             variant="body2"
             color="text.secondary"
             align="right"
-            href={`https://testnet.bscscan.com/address/${owner}`}
+            href={`${networks[chainId].blockExplorer}address/${owner}`}
             target="_blank"
             rel="noopener"
           >
@@ -67,11 +65,26 @@ function TokenCard({
           </Link>
         </Box>
       </CardContent>
-      <CardActions>
-        <Button variant="contained" fullWidth>
-          BRIDGE
-        </Button>
-      </CardActions>
+      {hasButton ? (
+        <CardActions>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={() => {
+              setCurrentItem({
+                tokenId,
+                owner,
+                skill,
+                chainId,
+                image,
+              });
+              toggleModal();
+            }}
+          >
+            BRIDGE
+          </Button>
+        </CardActions>
+      ) : null}
     </Card>
   );
 }
