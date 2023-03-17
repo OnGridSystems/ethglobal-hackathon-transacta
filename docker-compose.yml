@@ -6,6 +6,7 @@ services:
       - 443:443
     image: ingress
     volumes:
+      - /etc/ssl:/etc/ssl
       - static:/static
       - media:/media
     restart: on-failure
@@ -66,7 +67,7 @@ services:
       DB_PASSWORD: '${DB_PASSWORD}'
       DB_PORT: '5432'
       DB_HOST: api_db
-    command: python3 /indexers/token_indexer/start.py
+    command: python3 indexers/start.py
     restart: on-failure
     depends_on:
       - api_db
