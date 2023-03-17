@@ -19,7 +19,7 @@ class IndexerException(Exception):
 
 
 log = logging.getLogger(__name__)
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'app.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'api.settings')
 
 STEP = 1000
 
@@ -78,11 +78,10 @@ class Indexer:
         log.info(f"Init stage: indexer interval is {self.indexer_interval} s")
         self.w3 = Web3(Web3.HTTPProvider(upstream, request_kwargs={'timeout': 120}))
         self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
-
         self.chain_id = self.w3.eth.chain_id
         log.info(f"Init stage: chain id is {self.chain_id}")
 
-        self.token_address = self.w3.toChecksumAddress(token_address)
+        self.token_address = self.w3.to_checksum_address(token_address)
         log.info(f"Init stage: token contract address is {self.token_address}")
 
         self.token_contract = self.get_token_by_address_and_abi(self.token_address, token_abi_filename)
@@ -189,4 +188,3 @@ class Indexer:
         except IndexerException as e:
             log.error(f"Shutting down indexer because error occurred: {e}")
             exit(1)
-

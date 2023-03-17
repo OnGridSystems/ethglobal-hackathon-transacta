@@ -58,7 +58,7 @@ services:
     environment:
       SECRET_KEY: '${SECRET_KEY}'
       UPSTREAM: '${ETH_UPSTREAM}'
-      TOKEN_ABI_FILENAME: 'token_indexer/erc721-abi.json'
+      TOKEN_ABI_FILENAME: 'indexers/erc721-abi.json'
       TOKEN_ADDRESS: '${ETH_TOKEN_ADDRESS}'
       BRIDGE_ADDRESS: '${ETH_BRIDGE_ADDRESS}'
       INDEXER_INTERVAL: '${INDEXER_INTERVAL}'

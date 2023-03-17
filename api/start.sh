@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 retry=10
 echo -n "Trying migrations"
 for i in $(seq $retry)
