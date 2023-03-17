@@ -13,8 +13,6 @@ from django.conf import settings
 from web3.middleware import geth_poa_middleware
 from web3.types import Address, ChecksumAddress
 
-from transacta.models import Token, Status
-
 
 class IndexerException(Exception):
     pass
@@ -73,6 +71,7 @@ class Indexer:
         django.setup()
         self.storage_media = settings.MEDIA_ROOT
         log.info(f"Init stage: storage media path is {self.storage_media}")
+        from transacta.models import Token, Status
         self.token_model = Token
         self.status_model = Status
         self.indexer_interval = indexer_interval

@@ -4,9 +4,7 @@ import sys
 UPSTREAM = os.environ['UPSTREAM']
 TOKEN_ADDRESS = os.environ['TOKEN_ADDRESS']
 TOKEN_ABI_FILENAME = os.environ['TOKEN_ABI_FILENAME']
-BRIDGE_ADDRESS = os.environ['BRIDGE_ADDRESS']
 INDEXER_INTERVAL = int(os.environ['INDEXER_INTERVAL'])
-IPFS_HOST = os.environ["IPFS_HOST"]
 
 
 def main():
