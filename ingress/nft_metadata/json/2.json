@@ -1,0 +1,11 @@
+{
+  "name": "In your face catt",
+  "description": "In your face cat",
+  "image": "https://transacta.ongrid.pro/2.jpeg",
+  "attributes": [
+    {
+      "trait_type": "name",
+      "value": "In your face cat"
+    }
+  ]
+}

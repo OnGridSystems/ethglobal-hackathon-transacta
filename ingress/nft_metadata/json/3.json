@@ -1,0 +1,11 @@
+{
+  "name": "Neon cat",
+  "description": "Neon cat",
+  "image": "https://transacta.ongrid.pro/3.jpeg",
+  "attributes": [
+    {
+      "trait_type": "name",
+      "value": "Neon cat"
+    }
+  ]
+}
