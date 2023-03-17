@@ -98,7 +98,7 @@ services:
     image: app
     build:
       context: ./app
-      dockerfile: api.Dockerfile
+      dockerfile: Dockerfile
       args:
         REACT_APP_API_HOST: '${REACT_APP_API_HOST}'
     restart: on-failure
