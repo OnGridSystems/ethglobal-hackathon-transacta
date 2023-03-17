@@ -19,7 +19,7 @@ class Token(models.Model):
     skill = models.IntegerField(default=0)
     date_updated = models.DateTimeField(auto_now=True)
     blockchain_timestamp = models.PositiveBigIntegerField(null=True, default=None)
-    ipfs_uri_image = models.CharField(max_length=100, verbose_name='ifps uri image')
+    token_url = models.CharField(max_length=512)
 
     def __str__(self):
         return f"<Token Object>: Owner {self.owner} has token with id={self.token_id} on chain with id={self.chain_id}."
