@@ -49,29 +49,6 @@ services:
     depends_on:
       - api_db
 
-  bsc_indexer:
-    image: api
-    build: ./api
-    volumes:
-      - media:/app/media/
-    environment:
-      SECRET_KEY: '${SECRET_KEY}'
-      UPSTREAM: '${BSC_UPSTREAM}'
-      TOKEN_ABI_FILENAME: 'token_indexer/erc721-abi.json'
-      TOKEN_ADDRESS: '${BSC_TOKEN_ADDRESS}'
-      BRIDGE_ADDRESS: '${BSC_BRIDGE_ADDRESS}'
-      INDEXER_INTERVAL: '${INDEXER_INTERVAL}'
-      DB_NAME: '${DB_NAME}'
-      DB_USER: '${DB_USER}'
-      DB_PASSWORD: '${DB_PASSWORD}'
-      DB_PORT: '5432'
-      DB_HOST: api_db
-      IPFS_HOST: '${IPFS_HOST}'
-    command: python3 token_indexer/start.py
-    restart: on-failure
-    depends_on:
-      - api_db
-
   eth_indexer:
     image: api
     build: ./api
@@ -89,7 +66,7 @@ services:
       DB_PASSWORD: '${DB_PASSWORD}'
       DB_PORT: '5432'
       DB_HOST: api_db
-    command: python3 token_indexer/start.py
+    command: python3 /indexers/token_indexer/start.py
     restart: on-failure
     depends_on:
       - api_db
