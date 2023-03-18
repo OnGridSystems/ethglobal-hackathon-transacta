@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -6,10 +6,12 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { FormControl, InputLabel, MenuItem, Select, Avatar } from '@mui/material';
 import { Paper, Typography } from "@mui/material";
 import TokenCard from "./TokenCard";
 import ChainCard from "./ChainCard";
 import { ArrowCircleRightOutlined as ArrowIcon } from "@mui/icons-material";
+import { networksLogos } from "../constants";
 import networks from "../networks.json";
 import useConnection from "../hooks/useConnection";
 
@@ -19,9 +21,9 @@ import useConnection from "../hooks/useConnection";
  * @returns if exist, price with format "%price% %ticker%", else null
  */
 const getBridgePrice = (fromId, toId) => {
-  const price = networks[fromId]?.brigingPrice[toId]?.value
-  const ticker = networks[fromId]?.params?.nativeCurrency?.symbol
-  return price && ticker ? `${price} ${ticker}` : null
+  const price = networks[fromId]?.brigingPrice[toId]?.value;
+  const ticker = networks[fromId]?.params?.nativeCurrency?.symbol;
+  return price && ticker ? `${price} ${ticker}` : null;
 }
 
 function BridgeModal({ isOpen, toggle, currentItem }) {
@@ -34,13 +36,23 @@ function BridgeModal({ isOpen, toggle, currentItem }) {
       }
     }
   }, [isOpen]);
-  const connection = useConnection();
+  const chains = React.useMemo(
+    () => getAvaibleChains(
+      currentItem.chainId
+    ), [currentItem.chainId]
+  );
+  const [currentChain, setCurrentChain] = React.useState('-1');
+
+  useEffect(() => {
+    setCurrentChain(chains[0]?.chainId || '-1')
+  }, [chains])
+  
   const bridgePrice = useMemo(
     () => getBridgePrice(
       currentItem.chainId, 
-      connection.chainId
-    ), [connection.chainId, currentItem.chainId]
-  )
+      currentChain
+    ), [currentChain, currentItem.chainId]
+  );
 
   return (
     <Dialog
@@ -74,7 +86,12 @@ function BridgeModal({ isOpen, toggle, currentItem }) {
               <Typography align="center">
                 The token will be transferred to another network
               </Typography>
-              <BridgeModal.FromTo from={currentItem.chainId} to={connection.chainId} />
+              <BridgeModal.FromTo 
+                from={currentItem.chainId} 
+                chains={chains} 
+                currectChainId={currentChain} 
+                setChain={e => setCurrentChain(e.target.value)} 
+              />
               <Typography align="center">
                 Approve and bridging token to another network. The stages of
                 bridging will be shown here.
@@ -109,7 +126,7 @@ function BridgeModal({ isOpen, toggle, currentItem }) {
   );
 }
 
-BridgeModal.FromTo = ({from, to}) => {
+BridgeModal.FromTo = ({from, currectChainId, setChain, chains}) => {
   return (
     <Box
       display="flex"
@@ -118,8 +135,57 @@ BridgeModal.FromTo = ({from, to}) => {
     >
       <ChainCard chainId={from} />
       <ArrowIcon fontSize="large" />
-      <ChainCard chainId={to} />
+      <SelectChain currectChainId={currectChainId} setChain={setChain} chains={chains} />
     </Box>
+  )
+}
+
+const getAvaibleChains = (chainId) => {
+  const avaibleChains = networks[chainId]?.brigingPrice 
+  return avaibleChains 
+       ? Object.keys(networks[chainId]?.brigingPrice)
+               .map(chain => ({
+                chainId: chain, 
+                name: networks[chain].name
+              })) 
+       : []
+}
+
+const SelectChain = ({currectChainId, setChain, chains}) => {
+
+  return (
+    <Paper
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "1rem",
+        padding: "1rem",
+        width: "170px",
+      }}
+    >
+      <Avatar src={networksLogos[currectChainId]} />
+      <FormControl fullWidth>
+        <InputLabel id="demo-simple-select-label">Chain</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={currectChainId}
+          label="Chain"
+          onChange={setChain}
+        >
+          { 
+            chains.map(
+              (chain) => (
+                <MenuItem value={chain.chainId}>
+                  {chain.name}
+                </MenuItem>
+              )
+            ) 
+          }
+        </Select>
+      </FormControl>
+    </Paper>
   )
 }
 
