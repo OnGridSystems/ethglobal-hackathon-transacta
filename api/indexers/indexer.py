@@ -151,12 +151,12 @@ class Indexer:
             time.sleep(self.indexer_interval)
             log.info(f"Cycle body: current index block: {block_number}")
 
-            event_transfer = self.token_contract.events.Transfer.createFilter(
+            event_transfer = self.token_contract.events.Transfer.get_logs(
                 fromBlock=block_number,
                 toBlock=block_number + STEP
             )
-            events = event_transfer.get_all_entries()
-            log.info(f"Cycle body: obtained {len(events)} events")
+            print(event_transfer)
+            log.info(f"Cycle body: obtained {len(event_transfer)} events")
             '''
             for event in events:
                 if event.args.to == self.bridge_address \
