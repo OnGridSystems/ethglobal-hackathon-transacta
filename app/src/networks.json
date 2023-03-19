@@ -1,80 +1,80 @@
 {
-    "42": {
-      "blockExplorer": "https://kovan.etherscan.io/",
-      "name": "Kovan",
-      "longName": "Ethereum Mainnet",
+    "5": {
+      "blockExplorer": "https://goerli.etherscan.io",
+      "name": "Goerli",
+      "longName": "Ethereum Testnet Goerli",
       "tokenAddress": "0xf2391B61D7CC9Bb31D8BeC8Df7d05B3B5Dd97939",
       "bridgeAddress": "0x5EE16fBe8f8dBB2bb39f3ac2319bE891c2685EA4",
       "params": {
-        "chainId": "0x2A",
-        "chainName": "kovan eth",
+        "chainId": "0x5",
+        "chainName": "Goerli",
         "nativeCurrency": {
-          "name": "kovan eth",
+          "name": "Goerli Ether",
           "symbol": "ETH",
           "decimals": 18
         },
         "rpcUrls": [
-          "https://kovan.infura.io/v3/499cb18b5349480dab3e9a822893bb5f"
+          "https://goerli.infura.io/v3/499cb18b5349480dab3e9a822893bb5f"
         ],
-        "blockExplorerUrls": ["https://kovan.etherscan.io/"]
+        "blockExplorerUrls": ["https://goerli.etherscan.io"]
       },
-      "allowedToTransferNetworks": [97],
+      "allowedToTransferNetworks": [534353],
       "brigingPrice": {
-        "97": {
+        "534353": {
           "value": 0.03,
           "debridgeValue": 0.01
         }
       }
     },
-    "97": {
-      "blockExplorer": "https://testnet.bscscan.com/",
-      "name": "BSC",
-      "longName": "Binance Smart Chain",
+    "534353": {
+      "blockExplorer": "https://blockscout.scroll.io",
+      "name": "Scroll",
+      "longName": "Scroll Alpha Testnet",
       "tokenAddress": "0xbceEEA68fC0E50e0DE2e5473dE23CED1a7397629",
       "bridgeAddress": "0xcA2DaaDAD22BD98c020481A360344B31cD63251e",
       "params": {
-        "chainId": "0x61",
-        "chainName": "BSC Testnet",
+        "chainId": "0x82751",
+        "chainName": "Scroll Alpha Testnet",
         "nativeCurrency": {
-          "name": "bsc bnb",
-          "symbol": "BNB",
+          "name": "Ether",
+          "symbol": "ETH",
           "decimals": 18
         },
-        "rpcUrls": ["https://data-seed-prebsc-1-s1.binance.org:8545/"],
-        "blockExplorerUrls": ["https://testnet.bscscan.com/"]
+        "rpcUrls": ["https://alpha-rpc.scroll.io/l2"],
+        "blockExplorerUrls": ["https://blockscout.scroll.io"]
       },
-      "allowedToTransferNetworks": [42, 80001],
+      "allowedToTransferNetworks": [5],
       "brigingPrice": {
-        "42": {
+        "5": {
           "value": 0.03,
           "debridgeValue": 0.01
         },
-        "80001": {
+        "1442": {
           "value": 0.03,
           "debridgeValue": 0.01
         }
       }
     },
-    "80001": {
-      "blockExplorer": "https://mumbai.polygonscan.com/",
+    "1442": {
+      "blockExplorer": "https://explorer.public.zkevm-test.net",
       "name": "Polygon",
-      "longName": "Polygon",
+      "longName": "Polygon zkEVM Testnet",
       "tokenAddress": "0xeddB5E4b1199Cc409eaFB98EcF1D7f2b18fA51Af",
       "bridgeAddress": "0x89903eDda80616c9fC0bc01dE408eB8AfC75f09d",
       "params": {
-        "chainId": "0x13881",
-        "chainName": "Polygon Mumbai",
+        "chainId": "0x5a2",
+        "chainName": "Polygon",
         "nativeCurrency": {
-          "name": "matic",
-          "symbol": "MATIC",
+          "name": "Ether",
+          "symbol": "ETH",
           "decimals": 18
         },
-        "rpcUrls": ["https://rpc-mumbai.matic.today"],
-        "blockExplorerUrls": ["https://mumbai.polygonscan.com/"]
+        "rpcUrls": ["https://rpc.public.zkevm-test.net"],
+        "blockExplorerUrls": ["https://explorer.public.zkevm-test.net"]
       },
-      "allowedToTransferNetworks": [97],
+      "allowedToTransferNetworks": [534353],
       "brigingPrice": {
-        "97": {
+        "534353": {
           "value": 0.3,
           "debridgeValue": 0.1
         }
