@@ -2,6 +2,8 @@ import { styled } from '@mui/material/styles';
 import { Select, MenuItem, Typography, FormControl } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import { supportedChainIds } from '../constants';
+import networks from '../networks.json'
+import { networksLogos } from '../constants'
 
 const MuiSelect = styled(Select)({
   borderRadius: '8px',
@@ -35,6 +37,9 @@ const MenuProps = {
   },
 };
 
+const getNetworks = () => Object.keys(networks).map(id => ({networkId: id, name: networks[id].name}))
+const avaibleNetworks = getNetworks()
+
 const NetworkSelect = ({ chainId, changeNetwork }) => {
   return (
     <FormControl error={!supportedChainIds.includes(Number(chainId))}>
@@ -47,41 +52,16 @@ const NetworkSelect = ({ chainId, changeNetwork }) => {
         labelId='demo-simple-select-disabled-label'
         value={!supportedChainIds.includes(Number(chainId)) ? '' : chainId}
         onChange={changeNetwork}
-        MenuProps={MenuProps}>
+        MenuProps={MenuProps}
+      >
         <MenuItem sx={{ display: 'none' }} value=''></MenuItem>
-        {/* <MuiMenuItem value={42}>
-          <div
-            style={{
-              width: '30px',
-              height: '30px',
-              background: 'red',
-              marginRight: '5px',
-            }}></div>
-          KOVAN
-        </MuiMenuItem> */}
         <Typography sx={{ padding: '10px' }}>Select Network</Typography>
-        <MuiMenuItem value={97}>
-          <div
-            style={{
-              width: '25px',
-              height: '25px',
-              background: '#dbb2e3',
-              marginRight: '5px',
-              borderRadius: '50%',
-            }}></div>
-          BSC
-        </MuiMenuItem>
-        <MuiMenuItem value={80001}>
-          <div
-            style={{
-              width: '25px',
-              height: '25px',
-              background: '#f1e71f',
-              marginRight: '5px',
-              borderRadius: '50%',
-            }}></div>
-          POLYGON
-        </MuiMenuItem>
+        { avaibleNetworks.map((network) => (
+            <MuiMenuItem value={+network.networkId} key={network.networkId}>
+              <img src={networksLogos[network.networkId]} alt={network.name} height={25} width={25} style={{marginRight: '10px'}} />
+              {network.name}
+            </MuiMenuItem>
+        )) }
       </MuiSelect>
     </FormControl>
   );
