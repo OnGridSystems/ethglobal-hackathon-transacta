@@ -8,7 +8,6 @@ import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
-import { deepOrange } from "@mui/material/colors";
 import { shortenAddress } from "../utils";
 
 import { networksLogos } from "../constants";
@@ -30,7 +29,7 @@ function TokenCard({
       <CardContent sx={{ position: "relative" }}>
         <Avatar
           sx={{
-            bgcolor: deepOrange[500],
+            bgcolor: 'white',
             position: "absolute",
             right: 10,
             top: 0,
