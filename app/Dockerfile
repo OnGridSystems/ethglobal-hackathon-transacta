@@ -8,9 +8,5 @@ COPY public/ ./public/
 COPY src/ ./src/
 COPY package.json package-lock.json ./
 RUN npm install && npm run build
-
-FROM nginx:latest
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /app/build /usr/share/nginx/html
-
-EXPOSE 80
+RUN npm install -g serve
+CMD serve -s build
