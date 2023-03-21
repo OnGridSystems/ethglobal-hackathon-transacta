@@ -20,6 +20,8 @@ class Token(models.Model):
     date_updated = models.DateTimeField(auto_now=True)
     blockchain_timestamp = models.PositiveBigIntegerField(null=True, default=None)
     token_url = models.CharField(max_length=512)
+    polybase_token_url = models.CharField(max_length=512, null=True, blank=True)
+    json_metadata = models.JSONField(null=True)
 
     def __str__(self):
         return f"<Token Object>: Owner {self.owner} has token with id={self.token_id} on chain with id={self.chain_id}."
