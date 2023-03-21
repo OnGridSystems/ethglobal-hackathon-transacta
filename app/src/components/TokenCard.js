@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
+import Skeleton from "@mui/material/Skeleton"
 import { shortenAddress } from "../utils";
 
 import { networksLogos } from "../constants";
@@ -86,6 +87,55 @@ function TokenCard({
       ) : null}
     </Card>
   );
+}
+
+TokenCard.Skeleton = () => {
+  return (
+    <Card sx={{ width: 250 }}>
+      <Skeleton height={200} width='100%' variant="rounded" />
+      <CardContent sx={{ position: "relative" }}>
+        <Skeleton 
+          variant="circular" 
+          sx={{
+            position: "absolute",
+            right: 10,
+            top: 0,
+          }} 
+          height={40}
+          width={40}
+        />
+        <Typography gutterBottom variant="h5" component="div" align="left" maxWidth='170px'><Skeleton/></Typography>
+        <Box display="flex" justifyContent="space-between" >
+          <Typography variant="body2" color="text.secondary" align="left" width='50%'>
+            <Skeleton/>
+          </Typography>
+          <Typography variant="body2" color="text.secondary" align="right" width='15%'>
+            <Skeleton/>
+          </Typography>
+        </Box>
+          <Box display="flex" justifyContent="space-between">
+          <Typography variant="body2" color="text.secondary" align="left" width='20%'>
+            <Skeleton/>
+          </Typography>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            align="right"
+            width='40%'
+          >
+            <Skeleton/>
+          </Typography>
+        </Box>
+      </CardContent>
+      <CardActions>
+        <Skeleton
+          variant="rounded"
+          width='100%'
+          height='36px'
+        />
+        </CardActions>
+    </Card>
+  )
 }
 
 export default TokenCard;
