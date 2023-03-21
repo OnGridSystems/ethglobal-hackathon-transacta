@@ -1,28 +1,28 @@
 {
-    "5": {
-      "blockExplorer": "https://goerli.etherscan.io",
-      "name": "Goerli",
-      "longName": "Ethereum Testnet Goerli",
+    "280": {
+      "blockExplorer": "https://goerli.explorer.zksync.io",
+      "name": "zkSync",
+      "longName": "zkSync Era Testnet",
       "tokenAddress": "0xf2391B61D7CC9Bb31D8BeC8Df7d05B3B5Dd97939",
       "bridgeAddress": "0x5EE16fBe8f8dBB2bb39f3ac2319bE891c2685EA4",
       "params": {
-        "chainId": "0x5",
-        "chainName": "Goerli",
+        "chainId": "0x118",
+        "chainName": "zkSync",
         "nativeCurrency": {
-          "name": "Goerli Ether",
+          "name": "Ether",
           "symbol": "ETH",
           "decimals": 18
         },
         "rpcUrls": [
-          "https://goerli.infura.io/v3/499cb18b5349480dab3e9a822893bb5f"
+          "https://zksync2-testnet.zksync.dev"
         ],
-        "blockExplorerUrls": ["https://goerli.etherscan.io"]
+        "blockExplorerUrls": ["https://goerli.explorer.zksync.io"]
       },
-      "allowedToTransferNetworks": [534353],
+      "allowedToTransferNetworks": [1442],
       "brigingPrice": {
-        "534353": {
+        "1442": {
           "value": 0.03,
-          "debridgeValue": 0.01
+          "debridgeValue": 0.01  
         }
       }
     },
@@ -43,12 +43,8 @@
         "rpcUrls": ["https://alpha-rpc.scroll.io/l2"],
         "blockExplorerUrls": ["https://blockscout.scroll.io"]
       },
-      "allowedToTransferNetworks": [5],
+      "allowedToTransferNetworks": [1442],
       "brigingPrice": {
-        "5": {
-          "value": 0.03,
-          "debridgeValue": 0.01
-        },
         "1442": {
           "value": 0.03,
           "debridgeValue": 0.01
@@ -72,8 +68,12 @@
         "rpcUrls": ["https://rpc.public.zkevm-test.net"],
         "blockExplorerUrls": ["https://explorer.public.zkevm-test.net"]
       },
-      "allowedToTransferNetworks": [534353],
+      "allowedToTransferNetworks": [280, 534353],
       "brigingPrice": {
+        "280": {
+          "value": 0.3,
+          "debridgeValue": 0.1
+        },
         "534353": {
           "value": 0.3,
           "debridgeValue": 0.1
