@@ -4,11 +4,14 @@ import useModal from '../hooks/useModal';
 import BridgeModal from './BridgeModal';
 import { Box, FormControlLabel, Grid, Stack, Switch } from '@mui/material';
 import useConnection from '../hooks/useConnection';
+import { useQuery } from '@tanstack/react-query';
+import { getTokens } from '../api'
 
 const onlyMyTokens = (accountId) => (tokens) => {
   const account = accountId.toLowerCase()
   return tokens.filter((token) => token.owner.toLowerCase().includes(account))
 }
+/*
 const tokens = [
   {
     tokenId: 0,
@@ -53,12 +56,21 @@ const tokens = [
     skill: 999,
   },
 ];
+*/
 
 const useTokens = () => {
-  const [tokensList, setTokensList] = React.useState(tokens)
+  // const [tokensList, setTokensList] = React.useState(tokens)
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['tokens'],
+    queryFn: getTokens,
+
+  })
   return {
-    tokensList, 
-    setTokensList,
+    // tokensList, 
+    // setTokensList,
+    asyncTokens: data,
+    asyncTokensError: error,
+    asyncTokensLoading: isLoading
   }
 }
 
@@ -102,15 +114,17 @@ function TokensList() {
     image: '',
   });
   const { isOpen, toggle } = useModal();
-  const { tokensList } = useTokens()
+  // @todo: add error handling of loading
+  const { asyncTokens, asyncTokensError, asyncTokensLoading } = useTokens()
   const [filters, setFilters] = React.useState([])
   const filteredTokens = React.useMemo(() => {
-    let res = [...tokensList]
+    if (!asyncTokens) return null
+    let res = [...asyncTokens]
     for (const filter of filters) {
       res = filter.fn(res)
     }
     return res
-  }, [filters, tokensList])
+  }, [filters, asyncTokens])
 
   return (
     <Box justifyContent='center'>
@@ -123,24 +137,28 @@ function TokensList() {
           marginLeft: 0,
           gridTemplateColumns: 'repeat(auto-fill,minmax(260px,1fr))',
         }}>
-        {filteredTokens &&
-          filteredTokens.map(({ tokenId, owner, image, chainId, skill }) => {
-            return (
-              <Grid item key={tokenId}>
+          { asyncTokensLoading && 
+            Array.from({length: 8}, (_, idx) => (
+              <Grid item key={idx}>
+                <TokenCard.Skeleton key={idx}/>
+              </Grid>
+          ))}
+          { filteredTokens && 
+            filteredTokens.map(({ token_id, owner, image, chain_id, skill, json_metadata /* @TODO: add metadata handling */ }) => (
+              <Grid item key={token_id}>
                 <TokenCard
-                  key={tokenId}
-                  tokenId={tokenId}
+                  key={token_id}
+                  tokenId={token_id}
                   owner={owner}
                   image={image}
-                  chainId={chainId}
+                  chainId={chain_id}
                   skill={skill}
                   setCurrentItem={setCurrentItem}
                   toggleModal={toggle}
                   hasButton
                 />
               </Grid>
-            );
-          })}
+          ))}
         <BridgeModal
           isOpen={isOpen}
           toggle={toggle}
