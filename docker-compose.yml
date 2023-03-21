@@ -29,8 +29,6 @@ services:
     volumes:
       - backend_static:/backend_static/
       - media:/app/media/
-    ports:
-      - "8081:80"
     environment:
       SECRET_KEY: '${SECRET_KEY}'
       DB_NAME: '${DB_NAME}'
@@ -40,12 +38,14 @@ services:
       DB_HOST: api_db
       ADMIN_USER: '${ADMIN_USER}'
       ADMIN_PASSWORD: '${ADMIN_PASSWORD}'
-      BSC_CHAIN_ID: '${BSC_CHAIN_ID}'
-      BSC_START_BLOCK: '${BSC_START_BLOCK}'
       ETH_CHAIN_ID: '${ETH_CHAIN_ID}'
       ETH_START_BLOCK: '${ETH_START_BLOCK}'
-      POLYGON_CHAIN_ID: '${POLYGON_CHAIN_ID}'
-      POLYGON_START_BLOCK: '${POLYGON_START_BLOCK}'
+      ZKSYNC_CHAIN_ID: '${ZKSYNC_CHAIN_ID}'
+      ZKSYNC_START_BLOCK: '${ZKSYNC_START_BLOCK}'
+      POLYGON_ZK_EVM_ID: '${POLYGON_ZK_EVM_ID}'
+      POLYGON_ZK_EVM_START_BLOCK: '${POLYGON_ZK_EVM_START_BLOCK}'
+      SCROLL_CHAIN_ID: '${SCROLL_CHAIN_ID}'
+      SCROLL_START_BLOCK: '${SCROLL_START_BLOCK}'
     restart: on-failure
     depends_on:
       - api_db

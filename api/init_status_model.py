@@ -9,15 +9,12 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'api.settings')
 
 
 def main():
-    # bsc config
     Status.objects.get_or_create(
-        chain_id=os.environ['BSC_CHAIN_ID'],
+        chain_id=os.environ['ZKSYNC_CHAIN_ID'],
         defaults={
-            'indexed_block': os.environ['BSC_START_BLOCK']
+            'indexed_block': os.environ['ZKSYNC_START_BLOCK']
         })
 
-
-    # eth config
     Status.objects.get_or_create(
         chain_id=os.environ['ETH_CHAIN_ID'],
         defaults={
@@ -26,9 +23,15 @@ def main():
 
     # polygon config
     Status.objects.get_or_create(
-        chain_id=os.environ['POLYGON_CHAIN_ID'],
+        chain_id=os.environ['POLYGON_ZK_EVM_ID'],
         defaults={
-            'indexed_block': os.environ['POLYGON_START_BLOCK']
+            'indexed_block': os.environ['POLYGON_ZK_EVM_START_BLOCK']
+        })
+
+    Status.objects.get_or_create(
+        chain_id=os.environ['SCROLL_CHAIN_ID'],
+        defaults={
+            'indexed_block': os.environ['SCROLL_START_BLOCK']
         })
 
     log.info('successfully created')
