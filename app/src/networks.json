@@ -18,7 +18,7 @@
       ],
       "blockExplorerUrls": ["https://goerli.etherscan.io"]
     },
-    "allowedToTransferNetworks": [534353],
+    "allowedToTransferNetworks": [1442, 280, 534353],
     "brigingPrice": {
       "1442": {
         "value": 0.03,
@@ -51,17 +51,9 @@
       "rpcUrls": ["https://zksync2-testnet.zksync.dev"],
       "blockExplorerUrls": ["https://goerli.explorer.zksync.io"]
     },
-    "allowedToTransferNetworks": [1442],
+    "allowedToTransferNetworks": [5],
     "brigingPrice": {
-      "1442": {
-        "value": 0.03,
-        "debridgeValue": 0.01
-      },
       "5": {
-        "value": 0.03,
-        "debridgeValue": 0.01
-      },
-      "534353": {
         "value": 0.03,
         "debridgeValue": 0.01
       }
@@ -84,9 +76,9 @@
       "rpcUrls": ["https://alpha-rpc.scroll.io/l2"],
       "blockExplorerUrls": ["https://blockscout.scroll.io"]
     },
-    "allowedToTransferNetworks": [1442],
+    "allowedToTransferNetworks": [5],
     "brigingPrice": {
-      "1442": {
+      "5": {
         "value": 0.03,
         "debridgeValue": 0.01
       }
@@ -109,13 +101,9 @@
       "rpcUrls": ["https://rpc.public.zkevm-test.net"],
       "blockExplorerUrls": ["https://explorer.public.zkevm-test.net"]
     },
-    "allowedToTransferNetworks": [280, 534353],
+    "allowedToTransferNetworks": [5],
     "brigingPrice": {
-      "280": {
-        "value": 0.3,
-        "debridgeValue": 0.1
-      },
-      "534353": {
+      "5": {
         "value": 0.3,
         "debridgeValue": 0.1
       }
