@@ -2,8 +2,8 @@ import { styled } from '@mui/material/styles';
 import { Select, MenuItem, Typography, FormControl } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import { supportedChainIds } from '../constants';
-import networks from '../networks.json'
-import { networksLogos } from '../constants'
+import networks from '../networks.json';
+import { networksLogos } from '../constants';
 
 const MuiSelect = styled(Select)({
   borderRadius: '8px',
@@ -37,8 +37,12 @@ const MenuProps = {
   },
 };
 
-const getNetworks = () => Object.keys(networks).map(id => ({networkId: id, name: networks[id].name}))
-const avaibleNetworks = getNetworks()
+const getNetworks = () =>
+  Object.keys(networks).map((id) => ({
+    networkId: id,
+    name: networks[id].name,
+  }));
+const avaibleNetworks = getNetworks();
 
 const NetworkSelect = ({ chainId, changeNetwork }) => {
   return (
@@ -52,16 +56,21 @@ const NetworkSelect = ({ chainId, changeNetwork }) => {
         labelId='demo-simple-select-disabled-label'
         value={!supportedChainIds.includes(Number(chainId)) ? '' : chainId}
         onChange={changeNetwork}
-        MenuProps={MenuProps}
-      >
+        MenuProps={MenuProps}>
         <MenuItem sx={{ display: 'none' }} value=''></MenuItem>
         <Typography sx={{ padding: '10px' }}>Select Network</Typography>
-        { avaibleNetworks.map((network) => (
-            <MuiMenuItem value={+network.networkId} key={network.networkId}>
-              <img src={networksLogos[network.networkId]} alt={network.name} height={25} width={25} style={{marginRight: '10px'}} />
-              {network.name}
-            </MuiMenuItem>
-        )) }
+        {avaibleNetworks.map((network) => (
+          <MuiMenuItem value={+network.networkId} key={network.networkId}>
+            <img
+              src={networksLogos[network.networkId]}
+              alt={network.name}
+              height={25}
+              width={25}
+              style={{ marginRight: '10px' }}
+            />
+            {network.name}
+          </MuiMenuItem>
+        ))}
       </MuiSelect>
     </FormControl>
   );
