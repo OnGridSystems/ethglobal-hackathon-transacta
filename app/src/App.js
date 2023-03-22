@@ -21,7 +21,7 @@ function App() {
         switchNetwork={switchNetwork}
       />
       <Container>
-        <TokensList />
+        <TokensList chainId={chainId} switchNetwork={switchNetwork} />
       </Container>
     </div>
   );

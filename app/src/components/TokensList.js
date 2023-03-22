@@ -16,42 +16,48 @@ const tokens = [
   {
     tokenId: 0,
     owner: '0x0000000000000000000000000000000000000000',
-    image: 'https://cs12.pikabu.ru/post_img/big/2022/03/02/12/1646253355177860649.jpg',
+    image:
+      'https://cs12.pikabu.ru/post_img/big/2022/03/02/12/1646253355177860649.jpg',
     chainId: 534353,
     skill: 0,
   },
   {
     tokenId: 5,
     owner: '0x0000000000000000000000000000000000000000',
-    image: 'https://cs12.pikabu.ru/post_img/big/2022/03/02/12/1646253355177860649.jpg',
+    image:
+      'https://cs12.pikabu.ru/post_img/big/2022/03/02/12/1646253355177860649.jpg',
     chainId: 534353,
     skill: 0,
   },
   {
     tokenId: 6,
     owner: '0x0000000000000000000000000000000000000000',
-    image: 'https://cs12.pikabu.ru/post_img/big/2022/03/02/12/1646253355177860649.jpg',
+    image:
+      'https://cs12.pikabu.ru/post_img/big/2022/03/02/12/1646253355177860649.jpg',
     chainId: 534353,
     skill: 0,
   },
   {
     tokenId: 10,
     owner: '0x3A93BF9fCD41564E2213f021eF5A7C03907ECa77',
-    image: 'https://cs12.pikabu.ru/post_img/big/2022/03/02/12/1646253355177860649.jpg',
+    image:
+      'https://cs12.pikabu.ru/post_img/big/2022/03/02/12/1646253355177860649.jpg',
     chainId: 5,
     skill: 0,
   },
   {
     tokenId: 1,
     owner: '0x0000000000000000000000000000000000000000',
-    image: 'https://cs12.pikabu.ru/post_img/big/2022/03/02/12/1646253355177860649.jpg',
+    image:
+      'https://cs12.pikabu.ru/post_img/big/2022/03/02/12/1646253355177860649.jpg',
     chainId: 1442,
     skill: 10,
   },
   {
     tokenId: 2,
     owner: '0x0000000000000000000000000000000000000000',
-    image: 'https://cs12.pikabu.ru/post_img/big/2022/03/02/12/1646253355177860649.jpg',
+    image:
+      'https://cs12.pikabu.ru/post_img/big/2022/03/02/12/1646253355177860649.jpg',
     chainId: 5,
     skill: 999,
   },
@@ -75,36 +81,34 @@ const useTokens = () => {
 }
 
 const Filters = ({ setFilters }) => {
-  const [toggleOnlyMy, setToggleOnlyMy] = React.useState(false)
-  const connection = useConnection()
+  const [toggleOnlyMy, setToggleOnlyMy] = React.useState(false);
+  const connection = useConnection();
   const changeOnlyMy = () => {
-    setToggleOnlyMy(prev => !prev)
-    setFilters(
-      prev => !toggleOnlyMy 
-            ? [...prev, {
-                id: 'only-my-tokens', 
-                fn: onlyMyTokens(connection.userAddress)
-              }] 
-            : prev.filter(filter => filter.id !== 'only-my-tokens')
-    )
-  }
+    setToggleOnlyMy((prev) => !prev);
+    setFilters((prev) =>
+      !toggleOnlyMy
+        ? [
+            ...prev,
+            {
+              id: 'only-my-tokens',
+              fn: onlyMyTokens(connection.userAddress),
+            },
+          ]
+        : prev.filter((filter) => filter.id !== 'only-my-tokens')
+    );
+  };
 
   return (
-    <Stack direction='row' mb={1} >
-      <FormControlLabel 
-        control={
-          <Switch 
-            onChange={changeOnlyMy} 
-            checked={toggleOnlyMy} 
-          />
-        } 
+    <Stack direction='row' mb={1}>
+      <FormControlLabel
+        control={<Switch onChange={changeOnlyMy} checked={toggleOnlyMy} />}
         label={'Show only my tokens'}
       />
     </Stack>
-  )
-}
+  );
+};
 
-function TokensList() {
+function TokensList({ chainId, switchNetwork }) {
   const [currentItem, setCurrentItem] = useState({
     change: true,
     owner: '0x5fCb8f7149E8aD03544157C90E6f81b26933d3a2',
@@ -121,14 +125,14 @@ function TokensList() {
     if (!asyncTokens) return null
     let res = [...asyncTokens]
     for (const filter of filters) {
-      res = filter.fn(res)
+      res = filter.fn(res);
     }
     return res
   }, [filters, asyncTokens])
 
   return (
     <Box justifyContent='center'>
-      <Filters setFilters={setFilters}/>
+      <Filters setFilters={setFilters} />
       <Grid
         container
         spacing={2}
@@ -163,6 +167,8 @@ function TokensList() {
           isOpen={isOpen}
           toggle={toggle}
           currentItem={currentItem}
+          chainId={chainId}
+          switchNetwork={switchNetwork}
         />
       </Grid>
     </Box>
