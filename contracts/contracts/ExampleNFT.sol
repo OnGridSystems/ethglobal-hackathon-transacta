@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
  * @title L1Token
  * @author OnGrid Dev Team
  **/
-contract L1Token is ERC721Enumerable, AccessControl {
+contract ExampleNFT is ERC721Enumerable, AccessControl {
     using Strings for uint256;
 
 
