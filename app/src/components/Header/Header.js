@@ -1,16 +1,6 @@
-import { styled } from '@mui/material/styles';
-import Web3Status from './Web3Status';
-import NetworkSelect from './NetworkSelect';
-
-const AppHeader = styled('header')({
-  maxWidth: '100vw',
-  height: '80px',
-  display: 'flex',
-  alignItems: 'center',
-  padding: '0 40px',
-  justifyContent: 'space-between',
-  borderBottom: '1px solid #9c9c9c',
-});
+import Web3Status from '../Web3Status';
+import NetworkSelect from '../NetworkSelect';
+import { AppHeader, LogoContainer, ProjectName } from './Header.styled';
 
 const Header = ({ userAddress, connectWallet, switchNetwork, chainId }) => {
   const changeNetwork = (e) => {
@@ -19,7 +9,16 @@ const Header = ({ userAddress, connectWallet, switchNetwork, chainId }) => {
 
   return (
     <AppHeader>
-      <h2>Hachkathon</h2>
+      <LogoContainer>
+        <img
+          alt='transacta'
+          src='img/Logo_Transacta.svg'
+          style={{ width: '44px' }}
+        />
+        <ProjectName variant='h1' component='h2'>
+          Transacta
+        </ProjectName>
+      </LogoContainer>
       <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
         {!!chainId && (
           <NetworkSelect chainId={chainId} changeNetwork={changeNetwork} />

@@ -2,15 +2,14 @@ import React, { useState } from 'react';
 import TokenCard from './TokenCard';
 import useModal from '../hooks/useModal';
 import BridgeModal from './BridgeModal';
-import { Box, FormControlLabel, Grid, Stack, Switch } from '@mui/material';
-import useConnection from '../hooks/useConnection';
-import { useQuery } from '@tanstack/react-query';
-import { getTokens } from '../api'
+import { Box, Grid } from '@mui/material';
+import TokenFilters from './TokenFilters';
+import { useTokens } from '../hooks/useTokens';
 
 const onlyMyTokens = (accountId) => (tokens) => {
-  const account = accountId.toLowerCase()
-  return tokens.filter((token) => token.owner.toLowerCase().includes(account))
-}
+  const account = accountId.toLowerCase();
+  return tokens.filter((token) => token.owner.toLowerCase().includes(account));
+};
 /*
 const tokens = [
   {
@@ -64,51 +63,7 @@ const tokens = [
 ];
 */
 
-const useTokens = () => {
-  // const [tokensList, setTokensList] = React.useState(tokens)
-  const { data, error, isLoading } = useQuery({
-    queryKey: ['tokens'],
-    queryFn: getTokens,
-
-  })
-  return {
-    // tokensList, 
-    // setTokensList,
-    asyncTokens: data,
-    asyncTokensError: error,
-    asyncTokensLoading: isLoading
-  }
-}
-
-const Filters = ({ setFilters }) => {
-  const [toggleOnlyMy, setToggleOnlyMy] = React.useState(false);
-  const connection = useConnection();
-  const changeOnlyMy = () => {
-    setToggleOnlyMy((prev) => !prev);
-    setFilters((prev) =>
-      !toggleOnlyMy
-        ? [
-            ...prev,
-            {
-              id: 'only-my-tokens',
-              fn: onlyMyTokens(connection.userAddress),
-            },
-          ]
-        : prev.filter((filter) => filter.id !== 'only-my-tokens')
-    );
-  };
-
-  return (
-    <Stack direction='row' mb={1}>
-      <FormControlLabel
-        control={<Switch onChange={changeOnlyMy} checked={toggleOnlyMy} />}
-        label={'Show only my tokens'}
-      />
-    </Stack>
-  );
-};
-
-function TokensList({ chainId, switchNetwork }) {
+function TokensList({ chainId, switchNetwork, userAddress }) {
   const [currentItem, setCurrentItem] = useState({
     change: true,
     owner: '0x5fCb8f7149E8aD03544157C90E6f81b26933d3a2',
@@ -119,36 +74,48 @@ function TokensList({ chainId, switchNetwork }) {
   });
   const { isOpen, toggle } = useModal();
   // @todo: add error handling of loading
-  const { asyncTokens, asyncTokensError, asyncTokensLoading } = useTokens()
-  const [filters, setFilters] = React.useState([])
+  const { asyncTokens, asyncTokensError, asyncTokensLoading } = useTokens();
+  const [filters, setFilters] = React.useState([]);
   const filteredTokens = React.useMemo(() => {
-    if (!asyncTokens) return null
-    let res = [...asyncTokens]
+    if (!asyncTokens) return null;
+    let res = [...asyncTokens];
     for (const filter of filters) {
       res = filter.fn(res);
     }
-    return res
-  }, [filters, asyncTokens])
+    return res;
+  }, [filters, asyncTokens]);
 
   return (
     <Box justifyContent='center'>
-      <Filters setFilters={setFilters} />
+      <TokenFilters
+        setFilters={setFilters}
+        onlyMyTokens={onlyMyTokens}
+        userAddress={userAddress}
+      />
       <Grid
         container
-        spacing={2}
         sx={{
           display: 'grid',
           marginLeft: 0,
-          gridTemplateColumns: 'repeat(auto-fill,minmax(260px,1fr))',
+          gridTemplateColumns: 'repeat(auto-fill,minmax(276px,1fr))',
+          gap: '20px',
         }}>
-          { asyncTokensLoading && 
-            Array.from({length: 8}, (_, idx) => (
-              <Grid item key={idx}>
-                <TokenCard.Skeleton key={idx}/>
-              </Grid>
+        {asyncTokensLoading &&
+          Array.from({ length: 8 }, (_, idx) => (
+            <Grid item key={idx}>
+              <TokenCard.Skeleton key={idx} />
+            </Grid>
           ))}
-          { filteredTokens && 
-            filteredTokens.map(({ token_id, owner, image, chain_id, skill, json_metadata /* @TODO: add metadata handling */ }) => (
+        {filteredTokens &&
+          filteredTokens.map(
+            ({
+              token_id,
+              owner,
+              image,
+              chain_id,
+              skill,
+              json_metadata /* @TODO: add metadata handling */,
+            }) => (
               <Grid item key={token_id}>
                 <TokenCard
                   key={token_id}
@@ -162,7 +129,8 @@ function TokensList({ chainId, switchNetwork }) {
                   hasButton
                 />
               </Grid>
-          ))}
+            )
+          )}
         <BridgeModal
           isOpen={isOpen}
           toggle={toggle}

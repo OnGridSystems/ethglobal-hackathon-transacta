@@ -4,22 +4,33 @@ import { shortenAddress } from '../utils';
 
 const Status = styled('div')(({ theme }) =>
   theme.unstable_sx({
-    borderRadius: '8px',
-    bgcolor: 'primary.main',
-    width: 'max-content',
-    padding: '12px 15px',
-    color: 'white',
-    margin: 0,
-    height: '50px',
+    padding: '15px 25px',
+    fontWeight: '400',
+    height: '42px',
+    border: '1px solid #54C3FF',
+    borderRadius: ' 50px',
     display: 'flex',
     alignItems: 'center',
   })
 );
 
-const MuiButton = styled(Button)({
-  borderRadius: '15px',
-  padding: '10px 15px',
-  fontWeight: '600',
+export const MuiButton = styled(Button)({
+  padding: '15px 25px',
+  fontWeight: '500',
+  transition: 'none',
+  fontFamily: 'Inter',
+  height: '52px',
+  background: 'transparent',
+  borderRadius: ' 50px',
+  color: 'black',
+  boxShadow: 'none',
+  border: '1px solid rgb(113, 156, 255)',
+  '&: hover': {
+    color: 'white',
+    border: 'none',
+    boxShadow: 'none',
+    background: 'linear-gradient(190.11deg, #54C3FF 21.17%, #A453FF 184.05%)',
+  },
 });
 
 const Web3Status = ({ userAddress, connectWallet }) => {
