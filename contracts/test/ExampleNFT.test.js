@@ -1,10 +1,9 @@
 const { ethers } = require("hardhat");
-const { describe } = require("mocha");
 const {expect} = require("chai");
 
-describe("L1Token", () => {
+describe("ExampleNFT", () => {
     before(async () => {
-        this.factory =await ethers.getContractFactory("L1Token");
+        this.factory =await ethers.getContractFactory("ExampleNFT");
         this.contract = await  this.factory.deploy();
     });
 
