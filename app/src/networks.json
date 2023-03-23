@@ -4,7 +4,7 @@
     "name": "Goerli",
     "longName": "Ethereum Testnet Goerli",
     "tokenAddress": "0xD0aF11B17499baA91849512B41d8C12C8C2D5a35",
-    "bridgeAddress": "0x5EE16fBe8f8dBB2bb39f3ac2319bE891c2685EA4",
+    "bridgeAddress": "0xFe9ae2907dCdED590a4f38f5A9b3De2EbD8C9249",
     "params": {
       "chainId": "0x5",
       "chainName": "Goerli",
