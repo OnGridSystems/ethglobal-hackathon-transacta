@@ -6,9 +6,13 @@ import networks from '../networks.json';
 import { networksLogos } from '../constants';
 
 const MuiSelect = styled(Select)({
-  borderRadius: '8px',
-  height: '50px',
+  borderRadius: '50px',
   minWidth: '160px',
+  height: '42px',
+  fontWeight: '500',
+  border: '1px solid #54C3FF',
+  fontFamily: 'Inter',
+
   '.MuiOutlinedInput-notchedOutline': { border: 0 },
   '.MuiInputBase-input': {
     display: 'flex',
@@ -24,14 +28,19 @@ const MuiMenuItem = styled(MenuItem)({
 const MenuProps = {
   PaperProps: {
     sx: {
-      minWidth: '180px !important',
       marginTop: '10px',
+      borderRadius: '16px',
+      boxShadow: 'none',
+
+      border: '1.5px solid rgba(0, 0, 0, 0.2)',
       '.MuiMenu-list': {
         paddingTop: 0,
         paddingBottom: 0,
       },
       '.MuiMenuItem-root': {
-        padding: '15px 10px',
+        padding: '10px 15px',
+        borderTop: '1.5px solid rgba(0, 0, 0, 0.2)',
+        fontFamily: 'Inter',
       },
     },
   },
@@ -56,9 +65,12 @@ const NetworkSelect = ({ chainId, changeNetwork }) => {
         labelId='demo-simple-select-disabled-label'
         value={!supportedChainIds.includes(Number(chainId)) ? '' : chainId}
         onChange={changeNetwork}
-        MenuProps={MenuProps}>
+        MenuProps={MenuProps}
+        >
         <MenuItem sx={{ display: 'none' }} value=''></MenuItem>
-        <Typography sx={{ padding: '10px' }}>Select Network</Typography>
+        <Typography sx={{ padding: '10px', color: 'rgba(0, 0, 0, 0.5)' }}>
+          Select Network
+        </Typography>
         {avaibleNetworks.map((network) => (
           <MuiMenuItem value={+network.networkId} key={network.networkId}>
             <img
