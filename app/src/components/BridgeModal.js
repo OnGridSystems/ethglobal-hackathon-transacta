@@ -6,17 +6,20 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import {
   FormControl,
-  InputLabel,
   MenuItem,
   Select,
   Avatar,
+  DialogTitle,
+  IconButton,
+  Divider,
 } from '@mui/material';
-import { Paper, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import TokenCard from './TokenCard';
 import ChainCard from './ChainCard';
-import { ArrowCircleRightOutlined as ArrowIcon } from '@mui/icons-material';
+import { Close as CloseIcon, South as ArrowIcon } from '@mui/icons-material';
 import { networksLogos } from '../constants';
 import networks from '../networks.json';
+import { styled } from '@mui/material/styles';
 import { bridgeToken } from '../api';
 
 /**
@@ -42,20 +45,19 @@ const getAvaibleChains = (chainId) => {
 
 function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork }) {
   const descriptionElementRef = React.useRef(null);
-  const [ currentChain, setCurrentChain ] = React.useState('');
-  const [ pending, setPending ] = React.useState(false);
-  const [ txStatus, setTxStatus ] = React.useState('');
-  const [ txLink, setTxLink ] = React.useState('');
-  const [ confirmed, setConfirmed ] = React.useState(false);
-  const [ loading, setLoading ] = React.useState(false);
-  const [ error, setError ] = React.useState(null);
+  const [currentChain, setCurrentChain] = React.useState('');
+  const [pending, setPending] = React.useState(false);
+  const [txStatus, setTxStatus] = React.useState('');
+  const [txLink, setTxLink] = React.useState('');
+  const [confirmed, setConfirmed] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState(null);
 
   const chains = React.useMemo(
     () => getAvaibleChains(currentItem.chainId),
     [currentItem.chainId]
   ); // ref memo
 
-  
   React.useEffect(() => {
     if (isOpen) {
       const { current: descriptionElement } = descriptionElementRef;
@@ -75,31 +77,41 @@ function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork }) {
     if (isSameNetwork) {
       // toggle()
       await bridgeToken(
-        currentItem.chainId, 
-        currentChain, 
-        currentItem.tokenId, 
-        setPending, 
-        setTxStatus, 
-        setTxLink, 
-        setLoading, 
+        currentItem.chainId,
+        currentChain,
+        currentItem.tokenId,
+        setPending,
+        setTxStatus,
+        setTxLink,
+        setLoading,
         setConfirmed,
         setError
-      )
-      return
+      );
+      return;
     }
 
-    switchNetwork(currentItem.chainId)
-  }
+    switchNetwork(currentItem.chainId);
+  };
 
   return (
     <BridgeModal.Layout isOpen={isOpen} toggle={toggle}>
-      <TokenCard {...currentItem} />
+      <Box padding='40px'>
+        <TokenCard {...currentItem} />
+      </Box>
+      <Divider variant='middle' orientation='vertical' flexItem />
       <DialogContentText
         id='scroll-dialog-description'
         ref={descriptionElementRef}
-        tabIndex={-1}>
+        tabIndex={-1}
+      >
         <BridgeModal.Body>
-          <Typography align='center'>
+          <Typography
+            align='left'
+            fontWeight='600'
+            fontSize='16px'
+            lineHeight='140%'
+            color='rgba(27, 28, 30, 1)'
+          >
             The token will be transferred to another network
           </Typography>
           <BridgeModal.FromTo
@@ -108,54 +120,63 @@ function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork }) {
             currectChainId={currentChain}
             setChain={(e) => setCurrentChain(e.target.value)}
           />
-          <Typography align='center'>
-            Approve and bridging token to another network. The stages of
-            bridging will be shown here.
+          <Typography
+            align='left'
+            fontWeight='400'
+            fontSize='12px'
+            lineHeight='140%'
+            color='rgba(27, 28, 30, 1)'
+          >
+            The stages of bridging will be shown here.
           </Typography>
-          <div>
-            <Typography align='center' variant='h4'>
-              {bridgePrice}
-            </Typography>
-            <Typography align='center' variant='body2'>
-              Price per translation
-            </Typography>
-          </div>
-          <Typography align='center'>
+          <BridgePrice bridgePrice={bridgePrice} />
+          <Typography
+            align='left'
+            fontWeight='400'
+            fontSize='12px'
+            lineHeight='140%'
+            color='rgba(27, 28, 30, 1)'
+          >
             The amount payable is estimated. You will pay at least{' '}
             {bridgePrice + ' '}
             or the transaction will be rolled back
           </Typography>
-          <Button
-            onClick={!pending && !loading && bridge}
+          <MuiButton
+            onClick={
+              isSameNetwork
+                ? !pending && !loading && bridgePrice && bridge
+                : () => switchNetwork(currentItem.chainId)
+            }
             variant='contained'
             fullWidth
             size='large'
-            disabled={!bridgePrice || pending || loading}>
+            disabled={!bridgePrice || pending || loading}
+          >
             {isSameNetwork ? 'bridge' : 'Switch network'}
-          </Button>
+          </MuiButton>
 
-          { txStatus && (
+          {txStatus && (
             <Box display='flex' flexDirection='column'>
-              <Typography>{ pending }</Typography>
-              <Typography>{ txStatus }</Typography>
+              <Typography>{pending}</Typography>
+              <Typography>{txStatus}</Typography>
               <Typography>
-                <a 
+                <a
                   href={
-                    networks[currentItem.chainId].blockExplorer 
-                      + '/tx/' 
-                      + txLink
-                  } 
-                  target='_blank' 
-                  rel="noreferrer"
+                    networks[currentItem.chainId].blockExplorer +
+                    '/tx/' +
+                    txLink
+                  }
+                  target='_blank'
+                  rel='noreferrer'
                 >
                   link
                 </a>
               </Typography>
-              <Typography>{ confirmed }</Typography>
-              <Typography>{ loading }</Typography>
-              { error && <Typography>{ `Some error occured` }</Typography> }
+              <Typography>{confirmed}</Typography>
+              <Typography>{loading}</Typography>
+              {error && <Typography>{`Some error occured`}</Typography>}
             </Box>
-          ) }
+          )}
         </BridgeModal.Body>
       </DialogContentText>
     </BridgeModal.Layout>
@@ -169,13 +190,15 @@ BridgeModal.Layout = ({ children, isOpen, toggle }) => {
       onClose={toggle}
       scroll='body'
       aria-labelledby='scroll-dialog-title'
-      aria-describedby='scroll-dialog-description'>
-      <DialogContent>
-        <Box
-          display='flex'
-          flexDirection='column'
-          alignItems='center'
-          gap='1rem'>
+      aria-describedby='scroll-dialog-description'
+      maxWidth='md'
+      PaperProps={{
+        style: { borderRadius: 32 },
+      }}
+    >
+      <Title onClose={toggle} />
+      <DialogContent dividers>
+        <Box display='flex' flexDirection='row' alignItems='center' gap='1rem'>
           {children}
         </Box>
       </DialogContent>
@@ -185,23 +208,25 @@ BridgeModal.Layout = ({ children, isOpen, toggle }) => {
 
 BridgeModal.Body = ({ children }) => {
   return (
-    <Paper
+    <Box
       sx={{
-        padding: '2rem',
+        padding: '40px',
+        width: 'calc(343px + 80px)',
         display: 'flex',
         flexDirection: 'column',
         gap: '1rem',
-      }}>
+      }}
+    >
       {children}
-    </Paper>
+    </Box>
   );
 };
 
 BridgeModal.FromTo = ({ from, currectChainId, setChain, chains }) => {
   return (
-    <Box display='flex' justifyContent='space-around' alignItems='center'>
-      <ChainCard chainId={from} />
-      <ArrowIcon fontSize='large' />
+    <Box display='flex' flexDirection='column' alignItems='center' gap='15px'>
+      <ChainCard chainId={from} direction='From' />
+      <ArrowIcon sx={{ fontSize: '22px', color: 'rgba(0, 0, 0, 0.25)' }} />
       <SelectChain
         currectChainId={currectChainId}
         setChain={setChain}
@@ -211,37 +236,168 @@ BridgeModal.FromTo = ({ from, currectChainId, setChain, chains }) => {
   );
 };
 
+function Title(props) {
+  const { children, onClose, ...other } = props;
+
+  return (
+    <DialogTitle
+      {...other}
+      sx={{
+        height: 67,
+        fontSize: 22,
+        color: 'rgba(11, 14, 21, 1)',
+        fontWeight: 600,
+        paddingTop: '18px',
+        paddingLeft: '41px',
+      }}
+    >
+      Bridge token
+      <IconButton
+        aria-label='close'
+        onClick={onClose}
+        sx={{
+          position: 'absolute',
+          right: 40,
+          top: 12,
+          color: 'black',
+        }}
+      >
+        <CloseIcon sx={{ fontSize: 28 }} />
+      </IconButton>
+    </DialogTitle>
+  );
+}
+
+const MuiButton = styled(Button)({
+  padding: '15px 25px',
+  fontWeight: '500',
+  transition: 'none',
+  fontFamily: 'Inter',
+  height: '52px',
+  borderRadius: ' 50px',
+  color: 'white',
+  border: 'none',
+  boxShadow: 'none',
+  background: 'linear-gradient(190.11deg, #54C3FF 21.17%, #A453FF 184.05%)',
+  '&: hover': {
+    background: 'linear-gradient(10.11deg, #54C3FF 21.17%, #A453FF 184.05%)',
+    boxShadow: 'none',
+  },
+});
+
+const BridgePrice = ({ bridgePrice }) => {
+  return (
+    <Box
+      sx={{
+        background: 'rgba(221, 221, 221, 0.2)',
+        borderRadius: '32px',
+        maxWidth: '343px',
+        padding: '23px',
+      }}
+    >
+      <Typography
+        align='center'
+        color='rgba(27, 28, 30, 1)'
+        fontSize='32px'
+        fontWeight='600'
+        lineHeight='32px'
+        mt='6px'
+      >
+        {bridgePrice}
+      </Typography>
+      <Typography
+        align='center'
+        variant='body2'
+        fontSize='12px'
+        fontWeight='400'
+        color='rgba(27, 28, 30, 0.4)'
+      >
+        Price per translation
+      </Typography>
+    </Box>
+  );
+};
+
+const MuiSelect = styled(Select)({
+  fontWeight: '500',
+  fontFamily: 'Inter',
+
+  display: 'flex',
+  alignItems: 'center',
+  gap: '12px',
+  padding: '10px',
+  width: '343px',
+  borderRadius: '50px',
+  border: '1px solid rgba(0, 0, 0, 0.15)',
+  height: '68px',
+
+  '.MuiOutlinedInput-notchedOutline': { border: 0 },
+  '.MuiInputBase-input': {
+    display: 'flex',
+    alignItems: 'center',
+  },
+
+  '&:hover': {
+    border: '1px solid #54C3FF',
+  },
+});
+
+const MuiMenuItem = styled(MenuItem)({
+  display: 'flex',
+  alignItems: 'center',
+});
+
+const MenuProps = {
+  PaperProps: {
+    sx: {
+      marginTop: '10px',
+      borderRadius: '16px',
+      boxShadow: 'none',
+
+      border: '1.5px solid rgba(0, 0, 0, 0.2)',
+      '.MuiMenu-list': {
+        paddingTop: 0,
+        paddingBottom: 0,
+      },
+      '.MuiMenuItem-root': {
+        padding: '10px 15px',
+        borderTop: '1.5px solid rgba(0, 0, 0, 0.2)',
+        fontFamily: 'Inter',
+      },
+    },
+  },
+};
+
 const SelectChain = ({ currectChainId, setChain, chains }) => {
   return chains.length > 1 ? (
-    <Paper
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '1rem',
-        padding: '1rem',
-        width: '170px',
-      }}>
-      <>
-        <Avatar src={networksLogos[currectChainId]} />
-        <FormControl fullWidth>
-          <InputLabel id='demo-simple-select-label'>Chain</InputLabel>
-
-          <Select
-            labelId='demo-simple-select-label'
-            id='demo-simple-select'
-            value={currectChainId}
-            label='Chain'
-            onChange={setChain}>
-            {chains.map((chain) => (
-              <MenuItem value={chain.chainId}>{chain.name}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </>
-    </Paper>
+    <FormControl fullWidth>
+      <MuiSelect
+        labelId='demo-simple-select-label'
+        id='demo-simple-select'
+        value={currectChainId}
+        label='Chain'
+        onChange={setChain}
+        MenuProps={MenuProps}
+      >
+        <Typography sx={{ padding: '10px', color: 'rgba(0, 0, 0, 0.5)' }}>
+          Select Network
+        </Typography>
+        {chains.map((chain) => (
+          <MuiMenuItem value={chain.chainId}>
+            <Avatar
+              src={networksLogos[chain.chainId]}
+              alt={chain.name}
+              height={25}
+              width={25}
+              style={{ marginRight: '10px' }}
+            />
+            {chain.name}
+          </MuiMenuItem>
+        ))}
+      </MuiSelect>
+    </FormControl>
   ) : (
-    <ChainCard chainId={chains[0].chainId} />
+    <ChainCard chainId={chains[0].chainId} direction='To' />
   );
 };
 
