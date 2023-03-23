@@ -19,6 +19,6 @@ module.exports = {
         },
       },
       etherscan: {
-        apiKey: `${process.env.API_KEY.toString()}`
+        apiKey: `${process.env.API_KEY}`
       }
     };
