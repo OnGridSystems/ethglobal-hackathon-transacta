@@ -4,3 +4,4 @@ artifacts/
 *.iml
 *.pyc
 __pychache__/
+.idea/

@@ -8,7 +8,8 @@
     "@nomiclabs/hardhat-ethers": "^2.2.2",
     "@openzeppelin/contracts": "^4.8.2",
     "ethers": "^5.0.0",
-    "hardhat": "^2.13.0"
+    "hardhat": "^2.13.0",
+    "hardhat-deploy": "^0.11.25"
   },
   "dependencies": {
     "chai": "^4.3.7",
