@@ -1,18 +1,11 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
- "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
- width="400.000000pt" height="400.000000pt" viewBox="0 0 400.000000 400.000000"
- preserveAspectRatio="xMidYMid meet">
-
-<g transform="translate(0.000000,400.000000) scale(0.100000,-0.100000)"
-fill="#000000" stroke="none">
-<path d="M1160 2325 l-325 -325 325 -325 c179 -179 327 -325 331 -325 3 0 6
-107 7 237 1 130 5 239 10 242 5 3 152 112 326 241 l317 235 -328 3 -328 2 0
-170 c0 94 -2 170 -5 170 -3 0 -151 -146 -330 -325z"/>
-<path d="M2502 2414 c0 -129 -3 -238 -6 -242 -4 -3 -62 -47 -130 -96 -68 -50
--213 -156 -321 -236 l-197 -145 329 -3 328 -2 0 -170 c0 -94 2 -170 5 -170 3
-0 151 146 330 325 l325 325 -325 325 c-179 179 -328 325 -331 325 -3 0 -6
--106 -7 -236z"/>
-</g>
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 48C37.2548 48 48 37.2548 48 24C48 10.7452 37.2548 0 24 0C10.7452 0 0 10.7452 0 24C0 37.2548 10.7452 48 24 48Z" fill="url(#paint0_linear_169_1267)"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M42.9453 24.4305L32.2216 13.7182V21.5635L21.5741 29.4183L32.2216 29.4257V35.1429L42.9453 24.4305Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M5.14282 24.4266L15.8665 35.139V27.3767L26.436 19.5167L15.8665 19.5094V13.7143L5.14282 24.4266Z" fill="white"/>
+<defs>
+<linearGradient id="paint0_linear_169_1267" x1="0" y1="0" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+<stop stop-color="#8C8DFC"/>
+<stop offset="1" stop-color="#4E529A"/>
+</linearGradient>
+</defs>
 </svg>

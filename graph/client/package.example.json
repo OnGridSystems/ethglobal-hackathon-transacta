@@ -1,0 +1,19 @@
+{
+    "name": "ongrid",
+    "license": "UNLICENSED",
+    "scripts": {
+      "codegen": "graph codegen",
+      "build": "graph build",
+      "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ ongrid",
+      "create-local": "graph create --node http://graph_node:8020/ ongrid",
+      "remove-local": "graph remove --node http://graph_node:8020/ ongrid",
+      "deploy-local": "graph deploy --node http://graph_node:8020/ --ipfs http://ipfs:5001 ongrid -l v0.0.1",
+      "test": "graph test"
+    },
+    "dependencies": {
+      "@graphprotocol/graph-cli": "0.42.4",
+      "@graphprotocol/graph-ts": "0.29.1"
+    },
+    "devDependencies": { "matchstick-as": "0.5.0" }
+  }
+  
