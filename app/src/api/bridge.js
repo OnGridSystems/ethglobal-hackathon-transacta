@@ -113,7 +113,7 @@ export async function bridgeToken(
         // ),
       },
     )
-    setTransactionStatus(`Outbound`)
+    setTransactionStatus(`Transfer`)
     setTxLink(transfer.hash)
     await transfer.wait()
     setTransactionStatus(`Mined`)
@@ -146,6 +146,6 @@ export async function bridgeToken(
     setPending(false)
     setIsLoading(false)
     setError(error)
-    setTransactionStatus(`Outbound error`)
+    setTransactionStatus(`Transfer error`)
   }
 }

@@ -138,10 +138,22 @@ function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork }) {
             <Box display='flex' flexDirection='column'>
               <Typography>{ pending }</Typography>
               <Typography>{ txStatus }</Typography>
-              <Typography>{ txLink }</Typography>
+              <Typography>
+                <a 
+                  href={
+                    networks[currentItem.chainId].blockExplorer 
+                      + '/tx/' 
+                      + txLink
+                  } 
+                  target='_blank' 
+                  rel="noreferrer"
+                >
+                  link
+                </a>
+              </Typography>
               <Typography>{ confirmed }</Typography>
               <Typography>{ loading }</Typography>
-              { error && <Typography>{ JSON.stringify(error) }</Typography> }
+              { error && <Typography>{ `Some error occured` }</Typography> }
             </Box>
           ) }
         </BridgeModal.Body>
