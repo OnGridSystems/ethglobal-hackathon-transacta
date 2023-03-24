@@ -1,11 +1,11 @@
 {
-  "name": "Neon cat",
-  "description": "Neon cat",
-  "image": "https://transacta.ongrid.pro/token_metadata/images/3.jpeg",
+  "name": "Token #3",
+  "description": "Token #3",
+  "image": "https://transacta.ongrid.pro/token_metadata/images/3.jpg",
   "attributes": [
     {
       "trait_type": "name",
-      "value": "Neon cat"
+      "value": "Token #3"
     }
   ]
 }

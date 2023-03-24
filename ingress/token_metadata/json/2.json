@@ -1,11 +1,11 @@
 {
-  "name": "In your face catt",
-  "description": "In your face cat",
-  "image": "https://transacta.ongrid.pro/token_metadata/images/2.jpeg",
+  "name": "Token #2",
+  "description": "Token #2",
+  "image": "https://transacta.ongrid.pro/token_metadata/images/2.jpg",
   "attributes": [
     {
       "trait_type": "name",
-      "value": "In your face cat"
+      "value": "Token #2"
     }
   ]
 }
