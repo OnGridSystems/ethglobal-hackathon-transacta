@@ -3,6 +3,8 @@ import useConnection from './hooks/useConnection';
 import Header from './components/Header/Header';
 import styled from '@emotion/styled';
 import Footer from './components/Footer';
+import Transactions from './components/Transactions';
+import { Routes, Route } from 'react-router-dom';
 
 const Container = styled('div')({
   padding: '40px 120px 240px 120px',
@@ -23,11 +25,19 @@ function App() {
         switchNetwork={switchNetwork}
       />
       <Container>
-        <TokensList
-          chainId={chainId}
-          switchNetwork={switchNetwork}
-          userAddress={userAddress}
-        />
+        <Routes>
+          <Route
+            path='/'
+            element={
+              <TokensList
+                chainId={chainId}
+                switchNetwork={switchNetwork}
+                userAddress={userAddress}
+              />
+            }
+          />
+          <Route path='/transactions/:page' element={<Transactions />} />
+        </Routes>
       </Container>
       <Footer />
     </div>
