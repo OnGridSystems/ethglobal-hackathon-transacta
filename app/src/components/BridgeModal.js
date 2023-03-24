@@ -48,6 +48,8 @@ function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork }) {
   const [ txLink, setTxLink ] = React.useState('');
   const [ confirmed, setConfirmed ] = React.useState(false);
   const [ loading, setLoading ] = React.useState(false);
+  const [ error, setError ] = React.useState(null);
+
   const chains = React.useMemo(
     () => getAvaibleChains(currentItem.chainId),
     [currentItem.chainId]
@@ -71,8 +73,18 @@ function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork }) {
   const isSameNetwork = currentItem.chainId === Number(chainId);
   const bridge = async () => {
     if (isSameNetwork) {
-      toggle()
-      await bridgeToken(currentItem.chainId, currentChain, currentItem.tokenId, setPending, setTxStatus, setTxLink, setLoading, setConfirmed)
+      // toggle()
+      await bridgeToken(
+        currentItem.chainId, 
+        currentChain, 
+        currentItem.tokenId, 
+        setPending, 
+        setTxStatus, 
+        setTxLink, 
+        setLoading, 
+        setConfirmed,
+        setError
+      )
       return
     }
 
@@ -114,21 +126,22 @@ function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork }) {
             or the transaction will be rolled back
           </Typography>
           <Button
-            onClick={bridge}
+            onClick={!pending && !loading && bridge}
             variant='contained'
             fullWidth
             size='large'
-            disabled={!bridgePrice}>
+            disabled={!bridgePrice || pending || loading}>
             {isSameNetwork ? 'bridge' : 'Switch network'}
           </Button>
 
           { txStatus && (
             <Box display='flex' flexDirection='column'>
-              { pending }
-              { txStatus }
-              { txLink }
-              { confirmed }
-              { loading }
+              <Typography>{ pending }</Typography>
+              <Typography>{ txStatus }</Typography>
+              <Typography>{ txLink }</Typography>
+              <Typography>{ confirmed }</Typography>
+              <Typography>{ loading }</Typography>
+              { error && <Typography>{ JSON.stringify(error) }</Typography> }
             </Box>
           ) }
         </BridgeModal.Body>
