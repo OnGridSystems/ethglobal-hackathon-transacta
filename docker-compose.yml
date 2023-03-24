@@ -22,6 +22,7 @@ services:
       POSTGRES_DB: '${DB_NAME}'
       POSTGRES_USER: '${DB_USER}'
       POSTGRES_PASSWORD: '${DB_PASSWORD}'
+      PGPORT: 5433
 
   api:
     image: api
@@ -34,7 +35,6 @@ services:
       DB_NAME: '${DB_NAME}'
       DB_USER: '${DB_USER}'
       DB_PASSWORD: '${DB_PASSWORD}'
-      DB_PORT: '5432'
       DB_HOST: api_db
       ADMIN_USER: '${ADMIN_USER}'
       ADMIN_PASSWORD: '${ADMIN_PASSWORD}'
@@ -65,7 +65,7 @@ services:
       DB_NAME: '${DB_NAME}'
       DB_USER: '${DB_USER}'
       DB_PASSWORD: '${DB_PASSWORD}'
-      DB_PORT: '5432'
+      DB_PORT: '5433'
       DB_HOST: api_db
     command: python3 indexers/start.py
     restart: on-failure
@@ -80,6 +80,62 @@ services:
       args:
         REACT_APP_API_HOST: '${REACT_APP_API_HOST}'
     restart: on-failure
+
+  client:
+    build: ./graph/client
+    depends_on:
+      - ipfs
+      - graph_node
+    environment:
+      ipfs: 'ipfs:5001'
+  graph_node:
+    image: graphprotocol/graph-node
+    ports:
+      - '8000:8000'
+      - '8001:8001'
+      - '8020:8020'
+      - '8030:8030'
+      - '8040:8040'
+    depends_on:
+      - ipfs
+      - graph_postgres
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    environment:
+      postgres_host: graph_postgres
+      postgres_user: graph-node
+      postgres_pass: let-me-in
+      postgres_db: graph-node
+      ipfs: 'ipfs:5001'
+      ethereum: 'goerli:https://eth-goerli.g.alchemy.com/v2/ACGsTC9jdOnFCbXHXnrjA9O6HfgHIcCX'
+      GRAPH_LOG: info
+  ipfs:
+    image: ipfs/go-ipfs:latest
+    environment:
+      - IPFS_PROFILE=server
+      - IPFS_PATH=/data/ipfs
+    ports:
+      - '5001:5001'
+    volumes:
+      - ./graph/data/ipfs:/data/ipfs
+  graph_postgres:
+    image: postgres
+    command:
+      [
+        "postgres",
+        "-cshared_preload_libraries=pg_stat_statements"
+      ]
+    environment:
+      POSTGRES_USER: graph-node
+      POSTGRES_PASSWORD: let-me-in
+      POSTGRES_DB: graph-node
+      # FIXME: remove this env. var. which we shouldn't need. Introduced by
+      # <https://github.com/graphprotocol/graph-node/pull/3511>, maybe as a
+      # workaround for https://github.com/docker/for-mac/issues/6270?
+      PGDATA: "/var/lib/postgresql/data"
+      POSTGRES_INITDB_ARGS: "-E UTF8 --locale=C"
+    volumes:
+      - ./graph/data/postgres:/var/lib/postgresql/data
 
 volumes:
   backend_static:
