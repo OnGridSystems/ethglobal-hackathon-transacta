@@ -3,11 +3,44 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Typography } from '@mui/material';
+import { Link, Typography } from '@mui/material';
 import { MuiTable, TablePaper } from './TransactionsTable.styled';
-import TablePagination from '../Pagination';
+import { useQuery } from '@apollo/client';
+import { TRANSACTION_QUERY } from '../../gql';
+import { shortenAddress } from '../../utils';
+import LoadMore from '../LoadMore';
+import { useState } from 'react';
 
 const TransactionsTable = () => {
+  const [skip, setSKip] = useState(0);
+  const [showLoadButton, setShowLoadButton] = useState(true);
+  const { data, fetchMore } = useQuery(TRANSACTION_QUERY, {
+    variables: {
+      skip: 0,
+    },
+  });
+
+  const onLoadMore = () => {
+    fetchMore({
+      variables: {
+        skip: skip + 10,
+      },
+      updateQuery: (previousQueryResult, { fetchMoreResult }) => {
+        console.log(fetchMoreResult);
+        const newTransfers = fetchMoreResult.transfers;
+        if (newTransfers.length) {
+          setSKip((prev) => prev + 10);
+          return {
+            transfers: [...previousQueryResult.transfers, ...newTransfers],
+          };
+        } else {
+          setShowLoadButton(false);
+          // return previousQueryResult;
+        }
+      },
+    });
+  };
+
   return (
     <>
       <MuiTable component={TablePaper}>
@@ -15,7 +48,7 @@ const TransactionsTable = () => {
           <TableHead>
             <TableRow>
               <TableCell>Asset</TableCell>
-              <TableCell>ID</TableCell>
+              <TableCell>Transaction</TableCell>
               <TableCell>Sender</TableCell>
               <TableCell>Recipient</TableCell>
               <TableCell>Data</TableCell>
@@ -23,38 +56,50 @@ const TransactionsTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
-              <TableCell
-                sx={{ display: 'flex', gap: '20px' }}
-                component='th'
-                scope='row'>
-                <img
-                  src='/img/networks/mainnet.svg'
-                  width={24}
-                  height={24}
-                  alt='network'></img>
-                <Typography fontWeight={500}> Polygon</Typography>
-              </TableCell>
-              <TableCell align='right'>Cool Token #01</TableCell>
-              <TableCell align='right'>0x2472...38B4</TableCell>
-              <TableCell align='right'>0x2472...38B4</TableCell>
-              <TableCell align='right'>22.03.2023</TableCell>
-              <TableCell align='right'>14:35</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell component='th' scope='row'>
-                a
-              </TableCell>
-              <TableCell align='right'>1</TableCell>
-              <TableCell align='right'>2</TableCell>
-              <TableCell align='right'>3</TableCell>
-              <TableCell align='right'>4</TableCell>
-              <TableCell align='right'>4</TableCell>
-            </TableRow>
+            {data?.transfers.map((transfer) => (
+              <TableRow key={transfer.transactionHash}>
+                <TableCell
+                  sx={{ display: 'flex', gap: '20px' }}
+                  component='th'
+                  scope='row'>
+                  <img
+                    src='/img/networks/mainnet.svg'
+                    width={24}
+                    height={24}
+                    alt='network'></img>
+                  <Typography fontWeight={500}> Goerli</Typography>
+                </TableCell>
+                <TableCell align='right'>
+                  <Link
+                    href={`https://goerli.etherscan.io/tx/${transfer.transactionHash}`}
+                    target='_blank'
+                    rel='noopener'>
+                    {shortenAddress(transfer.transactionHash)}
+                  </Link>
+                </TableCell>
+                <TableCell align='right'>
+                  {shortenAddress(transfer.from)}
+                </TableCell>
+                <TableCell align='right'>
+                  {shortenAddress(transfer.to)}
+                </TableCell>
+                <TableCell align='right'>
+                  {new Date(
+                    transfer.blockTimestamp * 1000
+                  ).toLocaleDateString()}
+                </TableCell>
+                <TableCell align='right'>
+                  {new Date(
+                    transfer.blockTimestamp * 1000
+                  ).toLocaleTimeString()}
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </MuiTable>
-      <TablePagination />
+
+      {showLoadButton && <LoadMore onLoadMore={onLoadMore} />}
     </>
   );
 };
