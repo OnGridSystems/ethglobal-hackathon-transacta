@@ -22,6 +22,7 @@ services:
       POSTGRES_DB: '${DB_NAME}'
       POSTGRES_USER: '${DB_USER}'
       POSTGRES_PASSWORD: '${DB_PASSWORD}'
+      PGPORT: 5433
 
   api:
     image: api
@@ -34,7 +35,6 @@ services:
       DB_NAME: '${DB_NAME}'
       DB_USER: '${DB_USER}'
       DB_PASSWORD: '${DB_PASSWORD}'
-      DB_PORT: '5432'
       DB_HOST: api_db
       ADMIN_USER: '${ADMIN_USER}'
       ADMIN_PASSWORD: '${ADMIN_PASSWORD}'
@@ -65,7 +65,7 @@ services:
       DB_NAME: '${DB_NAME}'
       DB_USER: '${DB_USER}'
       DB_PASSWORD: '${DB_PASSWORD}'
-      DB_PORT: '5432'
+      DB_PORT: '5433'
       DB_HOST: api_db
     command: python3 indexers/start.py
     restart: on-failure
@@ -120,8 +120,6 @@ services:
       - ./graph/data/ipfs:/data/ipfs
   graph_postgres:
     image: postgres
-    ports:
-      - '5433:5433'
     command:
       [
         "postgres",
