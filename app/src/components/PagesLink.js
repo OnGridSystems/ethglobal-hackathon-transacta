@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Box } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const PageLink = styled(Link)`
   text-decoration: none;
@@ -13,15 +13,26 @@ const PageLink = styled(Link)`
   font-size: 16px;
   line-height: 19px;
   &:hover {
-    border-bottom: 4px solid #68A8FF;
+    border-bottom: 4px solid #68a8ff;
   }
 `;
 
 const PagesLink = () => {
+  const { pathname } = useLocation();
   return (
     <Box gap='40px' display='flex' height='100%' alignItems='center'>
-      <PageLink to='/'>Marketplace</PageLink>
-      <PageLink to='/transactions/1'>Transactions</PageLink>
+      <PageLink
+        to='/'
+        style={{ borderBottom: pathname === '/' ? ' 4px solid #68a8ff' : '' }}>
+        Marketplace
+      </PageLink>
+      <PageLink
+        to='/transactions'
+        style={{
+          borderBottom: pathname === 'transactions' ? ' 4px solid #68a8ff' : '',
+        }}>
+        Transactions
+      </PageLink>
     </Box>
   );
 };

@@ -3,10 +3,11 @@ import { Paper, TableContainer } from "@mui/material";
 
 export const MuiTable = styled(TableContainer)`
   border-radius: 24px;
-  padding: 5px 25px 5px 25px;
+  padding: 5px 25px 0 25px;
+
   .MuiTableCell-root {
     font-family: Inter;
-
+    font-size: 16px;
     text-align: center;
     :first-child {
       text-align: start;
@@ -19,6 +20,7 @@ export const MuiTable = styled(TableContainer)`
       border: 0;
     }
     .MuiTableRow-root {
+      
       :nth-child(even) {
         background: #f1f7f8;
       }
