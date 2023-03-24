@@ -3,8 +3,8 @@
     "blockExplorer": "https://goerli.etherscan.io",
     "name": "Goerli",
     "longName": "Ethereum Testnet Goerli",
-    "tokenAddress": "0xf2391B61D7CC9Bb31D8BeC8Df7d05B3B5Dd97939",
-    "bridgeAddress": "0x5EE16fBe8f8dBB2bb39f3ac2319bE891c2685EA4",
+    "tokenAddress": "0xD0aF11B17499baA91849512B41d8C12C8C2D5a35",
+    "bridgeAddress": "0xFe9ae2907dCdED590a4f38f5A9b3De2EbD8C9249",
     "params": {
       "chainId": "0x5",
       "chainName": "Goerli",
@@ -18,7 +18,7 @@
       ],
       "blockExplorerUrls": ["https://goerli.etherscan.io"]
     },
-    "allowedToTransferNetworks": [534353],
+    "allowedToTransferNetworks": [1442, 280, 534353],
     "brigingPrice": {
       "1442": {
         "value": 0.03,
@@ -51,17 +51,9 @@
       "rpcUrls": ["https://zksync2-testnet.zksync.dev"],
       "blockExplorerUrls": ["https://goerli.explorer.zksync.io"]
     },
-    "allowedToTransferNetworks": [1442],
+    "allowedToTransferNetworks": [5],
     "brigingPrice": {
-      "1442": {
-        "value": 0.03,
-        "debridgeValue": 0.01
-      },
       "5": {
-        "value": 0.03,
-        "debridgeValue": 0.01
-      },
-      "534353": {
         "value": 0.03,
         "debridgeValue": 0.01
       }
@@ -84,9 +76,9 @@
       "rpcUrls": ["https://alpha-rpc.scroll.io/l2"],
       "blockExplorerUrls": ["https://blockscout.scroll.io"]
     },
-    "allowedToTransferNetworks": [1442],
+    "allowedToTransferNetworks": [5],
     "brigingPrice": {
-      "1442": {
+      "5": {
         "value": 0.03,
         "debridgeValue": 0.01
       }
@@ -96,7 +88,7 @@
     "blockExplorer": "https://explorer.public.zkevm-test.net",
     "name": "Polygon",
     "longName": "Polygon zkEVM Testnet",
-    "tokenAddress": "0xeddB5E4b1199Cc409eaFB98EcF1D7f2b18fA51Af",
+    "tokenAddress": "0xd53eF742F39a23cEc684b64791A2f7584bCe6758",
     "bridgeAddress": "0x89903eDda80616c9fC0bc01dE408eB8AfC75f09d",
     "params": {
       "chainId": "0x5a2",
@@ -109,13 +101,9 @@
       "rpcUrls": ["https://rpc.public.zkevm-test.net"],
       "blockExplorerUrls": ["https://explorer.public.zkevm-test.net"]
     },
-    "allowedToTransferNetworks": [280, 534353],
+    "allowedToTransferNetworks": [5],
     "brigingPrice": {
-      "280": {
-        "value": 0.3,
-        "debridgeValue": 0.1
-      },
-      "534353": {
+      "5": {
         "value": 0.3,
         "debridgeValue": 0.1
       }

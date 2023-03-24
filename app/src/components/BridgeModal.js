@@ -17,6 +17,7 @@ import ChainCard from './ChainCard';
 import { ArrowCircleRightOutlined as ArrowIcon } from '@mui/icons-material';
 import { networksLogos } from '../constants';
 import networks from '../networks.json';
+import { bridgeToken } from '../api';
 
 /**
  * @param {string} fromId Chain Id of current item
@@ -41,6 +42,20 @@ const getAvaibleChains = (chainId) => {
 
 function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork }) {
   const descriptionElementRef = React.useRef(null);
+  const [ currentChain, setCurrentChain ] = React.useState('');
+  const [ pending, setPending ] = React.useState(false);
+  const [ txStatus, setTxStatus ] = React.useState('');
+  const [ txLink, setTxLink ] = React.useState('');
+  const [ confirmed, setConfirmed ] = React.useState(false);
+  const [ loading, setLoading ] = React.useState(false);
+  const [ error, setError ] = React.useState(null);
+
+  const chains = React.useMemo(
+    () => getAvaibleChains(currentItem.chainId),
+    [currentItem.chainId]
+  ); // ref memo
+
+  
   React.useEffect(() => {
     if (isOpen) {
       const { current: descriptionElement } = descriptionElementRef;
@@ -49,11 +64,6 @@ function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork }) {
       }
     }
   }, [isOpen]);
-  const chains = React.useMemo(
-    () => getAvaibleChains(currentItem.chainId),
-    [currentItem.chainId]
-  ); // working only with useMemo or useState&useEffect
-  const [currentChain, setCurrentChain] = React.useState('');
 
   React.useEffect(() => {
     setCurrentChain(chains[0]?.chainId || '');
@@ -61,6 +71,25 @@ function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork }) {
 
   const bridgePrice = getBridgePrice(currentItem.chainId, currentChain);
   const isSameNetwork = currentItem.chainId === Number(chainId);
+  const bridge = async () => {
+    if (isSameNetwork) {
+      // toggle()
+      await bridgeToken(
+        currentItem.chainId, 
+        currentChain, 
+        currentItem.tokenId, 
+        setPending, 
+        setTxStatus, 
+        setTxLink, 
+        setLoading, 
+        setConfirmed,
+        setError
+      )
+      return
+    }
+
+    switchNetwork(currentItem.chainId)
+  }
 
   return (
     <BridgeModal.Layout isOpen={isOpen} toggle={toggle}>
@@ -97,17 +126,36 @@ function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork }) {
             or the transaction will be rolled back
           </Typography>
           <Button
-            onClick={
-              isSameNetwork
-                ? bridgePrice && toggle
-                : () => switchNetwork(currentItem.chainId)
-            }
+            onClick={!pending && !loading && bridge}
             variant='contained'
             fullWidth
             size='large'
-            disabled={!bridgePrice}>
+            disabled={!bridgePrice || pending || loading}>
             {isSameNetwork ? 'bridge' : 'Switch network'}
           </Button>
+
+          { txStatus && (
+            <Box display='flex' flexDirection='column'>
+              <Typography>{ pending }</Typography>
+              <Typography>{ txStatus }</Typography>
+              <Typography>
+                <a 
+                  href={
+                    networks[currentItem.chainId].blockExplorer 
+                      + '/tx/' 
+                      + txLink
+                  } 
+                  target='_blank' 
+                  rel="noreferrer"
+                >
+                  link
+                </a>
+              </Typography>
+              <Typography>{ confirmed }</Typography>
+              <Typography>{ loading }</Typography>
+              { error && <Typography>{ `Some error occured` }</Typography> }
+            </Box>
+          ) }
         </BridgeModal.Body>
       </DialogContentText>
     </BridgeModal.Layout>
