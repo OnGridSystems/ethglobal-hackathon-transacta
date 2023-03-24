@@ -79,11 +79,11 @@ export async function bridgeToken(
   const Bridge = Contracts[fromChainId].Bridge;
   const BridgeAddress = Contracts[fromChainId].BridgeAddress;
   const signerAddress = await signer.getAddress();
-  const allowance = (await Token.getApproved(tokenId)).toString(); 
+  const allowance = (await Token.getApproved(tokenId)).toString();
 
+  setPending(true)
   if (allowance === AddressZero) {
     try {
-      setPending(true)
       const approve = await Token.approve(
         BridgeAddress, 
         tokenId, 
@@ -94,59 +94,58 @@ export async function bridgeToken(
       await approve.wait()
       setTransactionStatus(`Approved`)
       setTxLink(approve.hash)
-      const transfer = await Bridge.bridgeToL2(
-        toChainId,
-        tokenId,
-        {
-          from: signerAddress,
-          value: ethers.utils.parseEther(
-            `${networks[fromChainId].brigingPrice[toChainId].value}`,
-          ),
-        },
-      )
-      setTransactionStatus(`Outbound`)
-      setTxLink(transfer.hash)
-      await transfer.wait()
-      setTransactionStatus(`Mined`)
-      setTxLink(transfer.hash)
-      setTimeout(async function testTokens() {
-        try {
-          const res = await fetcherJson(() => fetch(`${host}/tokens/`))
-          const tx = res.find(tx => tx.tokenId === tokenId)
-          if (tx && tx.chainId !== fromChainId) {
-            setPending(false)
-            setIsLoading(false)
-            setConfirmed(true)
-          } else {
-            setTimeout(testTokens, 2000)
-          }
-        }
-        catch (error) {
-          console.error(error)
-        }
-      }, 1000)
     }
     catch (error) {
-      setPending(false)
-      setIsLoading(false)
       setError(error)
-    }
-    finally {
+      setPending(false)
+      setTransactionStatus(`Not approved`)
       return
     }
   }
-
-  setIsLoading(true)
-  setPending(true)
   try {
-    const tx = await Bridge.bridgeToL2(toChainId, tokenId)
-    await tx.wait()
+    const transfer = await Bridge.bridgeToL2(
+      toChainId,
+      tokenId,
+      {
+        from: signerAddress,
+        // value: ethers.utils.parseEther(
+        //   `${networks[fromChainId].brigingPrice[toChainId].value}`,
+        // ),
+      },
+    )
+    setTransactionStatus(`Outbound`)
+    setTxLink(transfer.hash)
+    await transfer.wait()
+    setTransactionStatus(`Mined`)
+    setTxLink(transfer.hash)
+    setIsLoading(true)
+    setPending(false)
+    const testTokens = async () => {
+      try {
+        const res = await fetcherJson(() => fetch(`${host}/tokens/`))
+        const token = res.find(tx => tx.tokenId === tokenId)
+        if (token && token.chainId !== fromChainId) {
+          setIsLoading(false)
+          setConfirmed(true)
+          setTransactionStatus(`Fulfilled`)
+          return 'Fulfilled'
+        } else {
+          console.log('try again')
+          await new Promise(r => setTimeout(r, 2000))
+          return await testTokens()
+        }
+      }
+      catch (e) {
+        throw e
+      }
+    }
+    await testTokens()
+    
   }
   catch (error) {
-    setError(error)
-  }
-  finally {
-    setIsLoading(false)
     setPending(false)
+    setIsLoading(false)
+    setError(error)
+    setTransactionStatus(`Outbound error`)
   }
 }
