@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import {
   FormControl,
   MenuItem,
@@ -99,7 +98,7 @@ function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork }) {
         <TokenCard {...currentItem} />
       </Box>
       <Divider variant='middle' orientation='vertical' flexItem />
-      <DialogContentText
+      <DialogContent
         id='scroll-dialog-description'
         ref={descriptionElementRef}
         tabIndex={-1}
@@ -142,11 +141,7 @@ function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork }) {
             or the transaction will be rolled back
           </Typography>
           <MuiButton
-            onClick={
-              isSameNetwork
-                ? !pending && !loading && bridgePrice && bridge
-                : () => switchNetwork(currentItem.chainId)
-            }
+            onClick={bridge}
             variant='contained'
             fullWidth
             size='large'
@@ -178,7 +173,7 @@ function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork }) {
             </Box>
           )}
         </BridgeModal.Body>
-      </DialogContentText>
+      </DialogContent>
     </BridgeModal.Layout>
   );
 }
