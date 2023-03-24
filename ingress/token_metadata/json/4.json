@@ -1,0 +1,11 @@
+{
+    "name": "Token #4",
+    "description": "Token #4",
+    "image": "https://transacta.ongrid.pro/token_metadata/images/4.jpg",
+    "attributes": [
+      {
+        "trait_type": "name",
+        "value": "Token #4"
+      }
+    ]
+  }
