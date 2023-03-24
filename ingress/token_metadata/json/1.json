@@ -1,11 +1,11 @@
 {
-  "name": "Old school cat",
-  "description": "Old school cat",
-  "image": "https://transacta.ongrid.pro/token_metadata/images/1.jpeg",
+  "name": "Token #1",
+  "description": "Token #1",
+  "image": "https://transacta.ongrid.pro/token_metadata/images/1.jpg",
   "attributes": [
     {
       "trait_type": "name",
-      "value": "Old school cat"
+      "value": "Token #1"
     }
   ]
 }
