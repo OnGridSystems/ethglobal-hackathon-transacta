@@ -1,0 +1,13 @@
+{
+    "name": "polybase_integration",
+    "version": "1.0.0",
+    "author": "Vadim Volkov",
+    "license": "MIT",
+    "private": false,
+    "dependencies": {
+      "@polybase/client": "^0.3.38",
+      "dotenv": "^16.0.3",
+      "pg": "^8.10.0",
+      "sequelize": "^6.30.0"
+    }
+  }
