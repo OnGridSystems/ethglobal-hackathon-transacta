@@ -36,7 +36,7 @@ function App() {
               />
             }
           />
-          <Route path='/transactions/:page' element={<Transactions />} />
+          <Route path='/transactions' element={<Transactions />} />
         </Routes>
       </Container>
       <Footer />

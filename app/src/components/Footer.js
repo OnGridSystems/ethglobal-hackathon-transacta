@@ -10,7 +10,7 @@ const Footer = () => {
       maxWidth='100vw'
       height='80px'
       bgcolor='white'>
-      <img src='img/Ongrid.svg' alt='ongrid'></img>
+      <img src='/img/Ongrid.svg' alt='ongrid'></img>
     </Box>
   );
 };
