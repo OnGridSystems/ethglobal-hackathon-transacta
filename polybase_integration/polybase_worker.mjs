@@ -3,7 +3,6 @@ import { Sequelize, DataTypes } from 'sequelize';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-
 const database = process.env["DB_NAME"] ? process.env["DB_NAME"]: ""
 const db_user = process.env["DB_USER"] ? process.env["DB_USER"]: ""
 const db_password = process.env["DB_PASSWORD"] ? process.env["DB_PASSWORD"]: ""
