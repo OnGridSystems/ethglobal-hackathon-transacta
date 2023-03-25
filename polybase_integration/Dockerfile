@@ -1,8 +1,11 @@
 FROM node:18
-
+RUN mkdir -p /app
 WORKDIR /app
 
-COPY ["package.json", "polybase_worker.mjs"] ./
-RUN yarn install
+COPY package.json /app
 
-CMD node polybase_worker.mjs
+RUN npm install
+
+COPY polybase_worker.mjs /app
+
+CMD ["node", "polybase_worker.mjs"]
