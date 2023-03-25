@@ -76,6 +76,37 @@ try {
   console.log(e);
 }
 
+export const BridgesStates = {
+  'approving': {
+    type: 'pending',
+    text: '🕒 Approving'
+  },
+  'approved': {
+    type: 'success',
+    text: '✔️ Approved'
+  },
+  'not_approved': {
+    type: 'error',
+    text: '❌ Approve Error'
+  },
+  'transferring': {
+    type: 'pending',
+    text: '🕒 Transferring'
+  },
+  'mined': {
+    type: 'success',
+    text: '✔️ Mined'
+  },
+  'transfer_error': {
+    type: 'error',
+    text: '❌ Transfer Error'
+  },
+  'fulfilled': {
+    type: 'success',
+    text: '✔️ Fulfilled'
+  }
+}
+
 export async function bridgeToken(
   fromChainId,
   toChainId,
@@ -99,15 +130,15 @@ export async function bridgeToken(
       const approve = await Token.approve(BridgeAddress, tokenId, {
         from: signerAddress,
       });
-      setTransactionStatus(`Approving`);
+      setTransactionStatus(BridgesStates.approving);
       setTxLink(approve.hash);
       await approve.wait();
-      setTransactionStatus(`Approved`);
+      setTransactionStatus(BridgesStates.approved);
       setTxLink(approve.hash);
     } catch (error) {
       setError(error);
       setPending(false);
-      setTransactionStatus(`Not approved`);
+      setTransactionStatus(BridgesStates.not_approved);
       return;
     }
   }
@@ -118,10 +149,10 @@ export async function bridgeToken(
       //   `${networks[fromChainId].brigingPrice[toChainId].value}`,
       // ),
     });
-    setTransactionStatus(`Transfer`);
+    setTransactionStatus(BridgesStates.transferring);
     setTxLink(transfer.hash);
     await transfer.wait();
-    setTransactionStatus(`Mined`);
+    setTransactionStatus(BridgesStates.mined);
     setTxLink(transfer.hash);
     setIsLoading(true);
     setPending(false);
@@ -132,7 +163,7 @@ export async function bridgeToken(
         if (token && token.chainId !== fromChainId) {
           setIsLoading(false);
           setConfirmed(true);
-          setTransactionStatus(`Fulfilled`);
+          setTransactionStatus(BridgesStates.fulfilled);
           return 'Fulfilled';
         } else {
           console.log('try again');
@@ -148,6 +179,6 @@ export async function bridgeToken(
     setPending(false);
     setIsLoading(false);
     setError(error);
-    setTransactionStatus(`Transfer error`);
+    setTransactionStatus(BridgesStates.transfer_error);
   }
 }
