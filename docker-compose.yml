@@ -80,6 +80,23 @@ services:
       args:
         REACT_APP_API_HOST: '${REACT_APP_API_HOST}'
     restart: on-failure
+  
+  polybase_worker:
+    image: polybase_worker
+    build:
+      context: ./polybase_integration
+      dockerfile: Dockerfile
+    environment:
+      - DB_USER: '${DB_USER}'
+      - DB_HOST: api_db
+      - DB_NAME: '${DB_NAME}'
+      - DB_PASSWORD: '${DB_PASSWORD}'
+      - DB_PORT: 5433
+      - POLYBASE_NAMESPACE: '${POLYBASE_NAMESPACE}'
+      - COLLECTION_NAME: '${POLYBASE_COLLECTION_NAME}'
+    restart: on-failure
+    depends_on:
+      - api_db
 
   client:
     build: ./graph/client
