@@ -1,4 +1,4 @@
-import { getAddress } from 'ethers';
+import { utils } from 'ethers';
 import { useState, useEffect } from 'react';
 import networks from '../networks.json';
 
@@ -21,7 +21,7 @@ const useConnection = () => {
 
       if (accounts.length > 0) {
         const account = accounts[0];
-        setUserAddress(getAddress(account));
+        setUserAddress(utils.getAddress(account));
       }
     }
   }
@@ -30,7 +30,7 @@ const useConnection = () => {
     const accounts = await window.ethereum.request({
       method: 'eth_requestAccounts',
     });
-    setUserAddress(getAddress(accounts[0]));
+    setUserAddress(utils.getAddress(accounts[0]));
   }
 
   async function switchNetwork(chainIdConnect) {
