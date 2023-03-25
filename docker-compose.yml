@@ -87,13 +87,14 @@ services:
       context: ./polybase_integration
       dockerfile: Dockerfile
     environment:
-      - DB_USER: '${DB_USER}'
-      - DB_HOST: api_db
-      - DB_NAME: '${DB_NAME}'
-      - DB_PASSWORD: '${DB_PASSWORD}'
-      - DB_PORT: 5433
-      - POLYBASE_NAMESPACE: '${POLYBASE_NAMESPACE}'
-      - COLLECTION_NAME: '${POLYBASE_COLLECTION_NAME}'
+      DB_USER: '${DB_USER}'
+      DB_HOST: '${DB_HOST}'
+      DB_NAME: '${DB_NAME}'
+      DB_PASSWORD: '${DB_PASSWORD}'
+      DB_PORT: 5433
+      POLYBASE_NAMESPACE: '${POLYBASE_NAMESPACE}'
+      COLLECTION_NAME: '${POLYBASE_COLLECTION_NAME}'
+      TABLE_NAME: '${TABLE_NAME}'
     restart: on-failure
     depends_on:
       - api_db

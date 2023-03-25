@@ -11,6 +11,8 @@ const db_host = process.env["DB_HOST"]? process.env["DB_HOST"]: ""
 const db_port = process.env["DB_PORT"]? parseInt(process.env["DB_PORT"]): 0
 const polybase_namespace = process.env["POLYBASE_NAMESPACE"]? process.env["POLYBASE_NAMESPACE"]: ""
 const polybase_collection_name = process.env["COLLECTION_NAME"]? process.env["COLLECTION_NAME"]: ""
+const table_name = process.env["TABLE_NAME"]? process.env["TABLE_NAME"]: ""
+
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 
@@ -36,7 +38,7 @@ const Token = sequelize.define('Token', {
     polybase_token_url: DataTypes.STRING
   },
   {
-    tableName: "tokens",
+    tableName: table_name,
     timestamps: false
   });
 
