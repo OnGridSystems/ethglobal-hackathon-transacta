@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
 import {
   FormControl,
   MenuItem,
@@ -11,6 +12,7 @@ import {
   DialogTitle,
   IconButton,
   Divider,
+  Link,
 } from '@mui/material';
 import { Typography } from '@mui/material';
 import TokenCard from './TokenCard';
@@ -20,6 +22,7 @@ import { networksLogos } from '../constants';
 import networks from '../networks.json';
 import { styled } from '@mui/material/styles';
 import { bridgeToken } from '../api';
+import { shortenAddress } from '../utils';
 
 /**
  * @param {string} fromId Chain Id of current item
@@ -42,7 +45,7 @@ const getAvaibleChains = (chainId) => {
     : [];
 };
 
-function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork }) {
+function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork, userAddress }) {
   const descriptionElementRef = React.useRef(null);
   const [currentChain, setCurrentChain] = React.useState('');
   const [pending, setPending] = React.useState(false);
@@ -72,7 +75,7 @@ function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork }) {
 
   const bridgePrice = getBridgePrice(currentItem.chainId, currentChain);
   const isSameNetwork = currentItem.chainId === Number(chainId);
-  const bridge = async () => {
+  const bridge = userAddress === currentItem.owner ? async () => {
     if (isSameNetwork) {
       // toggle()
       await bridgeToken(
@@ -90,7 +93,7 @@ function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork }) {
     }
 
     switchNetwork(currentItem.chainId);
-  };
+  } : undefined;
 
   return (
     <BridgeModal.Layout isOpen={isOpen} toggle={toggle}>
@@ -98,7 +101,7 @@ function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork }) {
         <TokenCard {...currentItem} />
       </Box>
       <Divider variant='middle' orientation='vertical' flexItem />
-      <DialogContent
+      <DialogContentText
         id='scroll-dialog-description'
         ref={descriptionElementRef}
         tabIndex={-1}
@@ -119,16 +122,66 @@ function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork }) {
             currectChainId={currentChain}
             setChain={(e) => setCurrentChain(e.target.value)}
           />
-          <Typography
-            align='left'
-            fontWeight='400'
-            fontSize='12px'
-            lineHeight='140%'
-            color='rgba(27, 28, 30, 1)'
+          { txStatus 
+          ? <TxStatus txStatus={txStatus} txLink={txLink} txError={error} fromChainId={currentItem.chainId}/>
+          : <Info bridgePrice={bridgePrice}/> }
+          <MuiButton
+            onClick={bridge}
+            variant='contained'
+            fullWidth
+            size='large'
+            disabled={!bridgePrice || pending || loading || userAddress !== currentItem.owner}
           >
-            The stages of bridging will be shown here.
-          </Typography>
-          <BridgePrice bridgePrice={bridgePrice} />
+            {isSameNetwork ? 'bridge' : 'Switch network'}
+          </MuiButton>
+        </BridgeModal.Body>
+      </DialogContentText>
+    </BridgeModal.Layout>
+  );
+}
+
+
+const TxStatus = ({txStatus, txLink, txError, fromChainId }) => {
+  return (
+    <Box display='flex' flexDirection='column' mt='5px'>
+      <Typography variant='subtitle1' fontWeight={500}>
+        Status:{` `}
+        <Typography 
+          component='span' 
+          color={txStatus.type === 'success' ? '#28a745' : txStatus.type === 'pending' ? '#ffc107' : '#dc3545'}
+          fontWeight={700}
+        >
+          {txStatus.text}
+        </Typography>
+        
+      </Typography>
+      <Typography variant='body1'>
+        Transaction hash:{' '}
+        <Link 
+          href={`${networks[fromChainId].blockExplorer}/tx/${txLink}`} 
+          target='_blank' 
+          fontSize={'14px'}
+        >
+          {shortenAddress(txLink)}
+        </Link>
+      </Typography>
+    </Box>
+  )
+}
+
+const Info = ({bridgePrice}) => {
+  return (
+    <>
+      <Typography
+        align='left'
+        fontWeight='400'
+        fontSize='12px'
+        lineHeight='140%'
+        color='rgba(27, 28, 30, 1)'
+      >
+        The stages of bridging will be shown here.
+      </Typography>
+      <BridgePrice bridgePrice={bridgePrice} />
           <Typography
             align='left'
             fontWeight='400'
@@ -140,42 +193,8 @@ function BridgeModal({ isOpen, toggle, currentItem, chainId, switchNetwork }) {
             {bridgePrice + ' '}
             or the transaction will be rolled back
           </Typography>
-          <MuiButton
-            onClick={bridge}
-            variant='contained'
-            fullWidth
-            size='large'
-            disabled={!bridgePrice || pending || loading}
-          >
-            {isSameNetwork ? 'bridge' : 'Switch network'}
-          </MuiButton>
-
-          {txStatus && (
-            <Box display='flex' flexDirection='column'>
-              <Typography>{pending}</Typography>
-              <Typography>{txStatus}</Typography>
-              <Typography>
-                <a
-                  href={
-                    networks[currentItem.chainId].blockExplorer +
-                    '/tx/' +
-                    txLink
-                  }
-                  target='_blank'
-                  rel='noreferrer'
-                >
-                  link
-                </a>
-              </Typography>
-              <Typography>{confirmed}</Typography>
-              <Typography>{loading}</Typography>
-              {error && <Typography>{`Some error occured`}</Typography>}
-            </Box>
-          )}
-        </BridgeModal.Body>
-      </DialogContent>
-    </BridgeModal.Layout>
-  );
+    </>
+  )
 }
 
 BridgeModal.Layout = ({ children, isOpen, toggle }) => {

@@ -43,6 +43,7 @@ function TokenCard({
   setCurrentItem,
   toggleModal,
   hasButton,
+  userAddress
 }) {
   return (
     <Card
@@ -96,7 +97,8 @@ function TokenCard({
             variant='contained'
             sx={{ margin: '25px 18px 32px 18px' }}
             fullWidth
-            onClick={() => {
+            disabled={userAddress !== owner}
+            onClick={userAddress !== owner ? undefined : () => {
               setCurrentItem({
                 tokenId,
                 owner,

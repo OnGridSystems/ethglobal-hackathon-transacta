@@ -10,58 +10,6 @@ const onlyMyTokens = (accountId) => (tokens) => {
   const account = accountId.toLowerCase();
   return tokens.filter((token) => token.owner.toLowerCase().includes(account));
 };
-/*
-const tokens = [
-  {
-    tokenId: 0,
-    owner: '0x0000000000000000000000000000000000000000',
-    image:
-      'https://cs12.pikabu.ru/post_img/big/2022/03/02/12/1646253355177860649.jpg',
-    chainId: 534353,
-    skill: 0,
-  },
-  {
-    tokenId: 5,
-    owner: '0x0000000000000000000000000000000000000000',
-    image:
-      'https://cs12.pikabu.ru/post_img/big/2022/03/02/12/1646253355177860649.jpg',
-    chainId: 534353,
-    skill: 0,
-  },
-  {
-    tokenId: 6,
-    owner: '0x0000000000000000000000000000000000000000',
-    image:
-      'https://cs12.pikabu.ru/post_img/big/2022/03/02/12/1646253355177860649.jpg',
-    chainId: 534353,
-    skill: 0,
-  },
-  {
-    tokenId: 10,
-    owner: '0x3A93BF9fCD41564E2213f021eF5A7C03907ECa77',
-    image:
-      'https://cs12.pikabu.ru/post_img/big/2022/03/02/12/1646253355177860649.jpg',
-    chainId: 5,
-    skill: 0,
-  },
-  {
-    tokenId: 1,
-    owner: '0x0000000000000000000000000000000000000000',
-    image:
-      'https://cs12.pikabu.ru/post_img/big/2022/03/02/12/1646253355177860649.jpg',
-    chainId: 1442,
-    skill: 10,
-  },
-  {
-    tokenId: 2,
-    owner: '0x0000000000000000000000000000000000000000',
-    image:
-      'https://cs12.pikabu.ru/post_img/big/2022/03/02/12/1646253355177860649.jpg',
-    chainId: 5,
-    skill: 999,
-  },
-];
-*/
 
 function TokensList({ chainId, switchNetwork, userAddress }) {
   const [currentItem, setCurrentItem] = useState({
@@ -73,8 +21,7 @@ function TokensList({ chainId, switchNetwork, userAddress }) {
     image: '',
   });
   const { isOpen, toggle } = useModal();
-  // @todo: add error handling of loading
-  const { asyncTokens, asyncTokensError, asyncTokensLoading } = useTokens();
+  const { asyncTokens, asyncTokensLoading } = useTokens();
   const [filters, setFilters] = React.useState([]);
   const filteredTokens = React.useMemo(() => {
     if (!asyncTokens) return null;
@@ -114,7 +61,7 @@ function TokensList({ chainId, switchNetwork, userAddress }) {
               image,
               chain_id,
               skill,
-              json_metadata /* @TODO: add metadata handling */,
+              json_metadata,
             }) => (
               <Grid item key={token_id}>
                 <TokenCard
@@ -127,6 +74,7 @@ function TokensList({ chainId, switchNetwork, userAddress }) {
                   setCurrentItem={setCurrentItem}
                   toggleModal={toggle}
                   hasButton
+                  userAddress={userAddress}
                 />
               </Grid>
             )
@@ -137,6 +85,7 @@ function TokensList({ chainId, switchNetwork, userAddress }) {
           currentItem={currentItem}
           chainId={chainId}
           switchNetwork={switchNetwork}
+          userAddress={userAddress}
         />
       </Grid>
     </Box>
