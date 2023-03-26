@@ -23,7 +23,7 @@ For the MVP presented on [ETHGlobal Scaling Ethereum Hackathon](https://ethgloba
 
 ### NFT metadata relayer
 
-NFT metadata relayer mirrors initial metadata stored using HTTPs webservice to decentralized Polybase db:
+NFT metadata relayer mirrors initial metadata stored using HTTPs webservice or IPFS endpoint to decentralized [Polybase db](https://polybase.xyz/) collection:
 * NFT get periodically checked for URI changes
 * JSON URI gets fetched by HTTPs, its image gets downloaded, traits get parsed and decoded
 * Image gets uploaded to the Polybase
@@ -34,13 +34,16 @@ NFT metadata relayer mirrors initial metadata stored using HTTPs webservice to d
 
 * The project has been built using the Django web framework, which is a popular Python-based tool for building web applications. For building RESTful APIs, the Django Rest Framework (DRF) has been utilized to simplify the process of building APIs and make them more modular and scalable.
 
+* For fetching events history we use [TheGraph engine](https://thegraph.com/en/) that collects token transfers and provides graphQL endpoint used by Frontend
+
 * The frontend DApp has been built with ReactJS, a widely-used JavaScript library for building user interfaces. This enables the application to provide a more responsive, dynamic and interactive user experience. 
 
 * Additionally, background workers (indexers and relayers) has been implemented in Python for EVM and Pythonic web3 client library. Polybase engine uses NodeJS and polybase client.
 
 Overall, this technology stack provides a solid foundation for building a scalable, performant and user-friendly web application.
 
-![image](https://user-images.githubusercontent.com/7992612/225061454-6bd4c809-d6e1-480f-bfd4-d96e8968b71b.png)
+![image](https://user-images.githubusercontent.com/7992612/227772379-e633f363-86ec-4dbd-97a1-d21c0fd9ceed.png)
+
 
 # License
 
