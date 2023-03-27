@@ -1,0 +1,38 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/IBridge.sol": {
+      "content": "// SPDX-License-Identifier: OWNED BY ConsenSys Software Inc.\npragma solidity ^0.8.0;\n\n/// @title The bridge interface implemented on both chains\ninterface IBridge {\n  /// @notice Emitted on the origin chain when a message is to be sent to the destination chain\n  /// @param _from the msg.sender calling the origin bridge\n  /// @param _to the destination contract on the destination chain\n  /// @param _fee the bridge fee on the origin chain\n  /// @param _value the value to be transferred\n  /// @param _deadline timestamp as second since unix epoch after which the transaction is invalid and can be dropped\n  /// @param _calldata the calldata used by the destination bridge to call the destination contract\n  /// @dev _calldata can be calculated using abi.encodeWithSignature(\"transfer(address,uint256)\", recipient, amount))\n  event MessageDispatched(\n    address _from,\n    address _to,\n    uint256 _fee,\n    uint256 _value,\n    uint256 _deadline,\n    bytes _calldata\n  );\n\n  /// @notice Emitted on the destination chain when a message bas been received by the destination bridge\n  /// @param _from the msg.sender calling the origin bridge\n  /// @param _to the destination contract on the destination chain\n  /// @param _fee the bridge fee on the origin chain\n  /// @param _value the value to be transferred\n  /// @param _deadline timestamp as second since unix epoch after which the transaction is invalid and can be dropped\n  /// @param _calldata the calldata used by the destination bridge to call the destination contract\n  /// @dev _calldata can be calculated using abi.encodeWithSignature(\"transfer(address,uint256)\", recipient, amount))\n  event MessageDelivered(\n    address _from,\n    address _to,\n    uint256 _fee,\n    uint256 _value,\n    uint256 _deadline,\n    bytes _calldata\n  );\n\n  /// @notice Dispatches a message from the given chain. Must be called by a developer or another contract.\n  /// @notice If this is the L2 bridge, then this methods dispatches a message from L2 to L1.\n  /// @dev This function should be called with a value > _fee. The reminder will be send on the destination chain.\n  /// @param _to the destination contract on the destination chain\n  /// @param _fee the bridge fee on the origin chain\n  /// @param _deadline timestamp as second since unix epoch after which the transaction is invalid and can be dropped\n  /// @param _calldata the calldata used by the destination bridge to call the destination contract\n  function dispatchMessage(\n    address _to,\n    uint256 _fee,\n    uint256 _deadline,\n    bytes calldata _calldata\n  ) external payable;\n\n  /// @notice Deliver a message to the destination chain.\n  /// @notice Is called automatically by the operator. Cannot be used by developers\n  /// @param _from the msg.sender calling the origin bridge\n  /// @param _to the destination contract on the destination chain\n  /// @param _fee the bridge fee on the origin chain\n  /// @param _value the value to be transferred\n  /// @param _deadline timestamp as second since unix epoch after which the transaction is invalid and can be dropped\n  /// @param _calldata the calldata used by the destination bridge to call the destination contract\n  function deliverMessage(\n    address _from,\n    address _to,\n    uint256 _fee,\n    uint256 _value,\n    uint256 _deadline,\n    bytes calldata _calldata\n  ) external payable;\n\n  /// @notice When called within the context of the delivered call can be used to return the sender (_from)\n  /// @notice on the origin chain otherwise returns the zero address.\n  /// @return Address of the caller contract on the origin chain.\n  function sender() external view returns (address);\n}"
+    },
+    "contracts/L1Contract.sol": {
+      "content": "//SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport \"./IBridge.sol\";\n\ncontract L1Contract {\n    address l1Bridge;\n\n    constructor(address _l1Bridge) {\n      l1Bridge = _l1Bridge;\n    }\n\n    function sendMessageToL2(address _to, bytes memory _calldata, uint256 fee) payable public {\n      uint256 deadline = 999999999999;\n\n      IBridge bridge = IBridge(l1Bridge);\n      bridge.dispatchMessage{value: msg.value}(\n        _to,\n        fee,\n        deadline,\n        _calldata\n      );\n    }\n}"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}

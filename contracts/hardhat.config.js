@@ -3,8 +3,8 @@ require("@nomiclabs/hardhat-ethers");
 require("hardhat-deploy");
 require("dotenv").config();
 
-const private_key = process.env["PRIVATE_KEY"]
-const api_key = process.env["API_KEY"]
+const private_key = process.env["PRIVATE_KEY"];
+const api_key = process.env["API_KEY"];
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -28,6 +28,17 @@ module.exports = {
       url: "https://eth-goerli.g.alchemy.com/v2/tmn4Rf7lh4ezew016QX0cDPAmAKb2KBz",
       accounts: [private_key],
       chainId: 5,
+    },
+    zkEVM: {
+      url: "https://rpc.public.zkevm-test.net",
+      accounts: [`0x${private_key}`],
+      chainId: 1442,
+      verify: {
+        etherscan: {
+          apiKey: api_key,
+          apiURL: "https://explorer.public.zkevm-test.net/api",
+        },
+      },
     },
   },
   etherscan: {
