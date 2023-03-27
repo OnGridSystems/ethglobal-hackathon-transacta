@@ -1,0 +1,28 @@
+name: test-workflows
+on: [push]
+
+jobs:
+  run-tests:
+    name: run-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with: 
+          node-version: 18
+      - run: yarn install
+        working-directory: ./contracts
+      - run: yarn hardhat test
+        working-directory: ./contracts
+        env:
+          #the private key is fake and for testing purposes only
+          PRIVATE_KEY: "2dfff2e54629a02103f208bc5781ae9fb9f88d5c91a94454e47aeeec5f7da52a"
+          API_KEY: "obviously_fake_api_key"
+  gather-stats:
+    name: cloc
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: sudo apt-get install cloc -y
+      - run: python project_data.py
+

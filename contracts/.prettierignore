@@ -1,4 +1,6 @@
+deployments/
 node_modules/
+artifacts/
 cache/
 *.iml
 *.pyc
