@@ -3,3 +3,4 @@ cache/
 *.iml
 *.pyc
 __pychache__/
+.env
