@@ -1,0 +1,41 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/IScrollMessenger.sol": {
+      "content": "//SPDX-License-Identifier: Unlicense\npragma solidity ^0.8.18;\n\ninterface IScrollMessenger {\n  /**********\n   * Events *\n   **********/\n\n  /// @notice Emitted when a cross domain message is sent.\n  event SentMessage(\n    uint256 tokenId,\n    address to\n  );\n\n  /// @notice Return the sender of a cross domain message.\n  function xDomainMessageSender() external view returns (address);\n\n  /****************************\n   * Public Mutated Functions *\n   ****************************/\n\n  /// @notice Send cross chain message from L1 to L2 or L2 to L1.\n  function sendMessage(\n    uint256 tokenId,\n    address to\n\n  ) external payable;\n}"
+    },
+    "contracts/L1Contract.sol": {
+      "content": "//SPDX-License-Identifier: Unlicense\npragma solidity ^0.8.18;\n\nimport \"./IScrollMessenger.sol\";\n\n// interface IL2Contract {\n//     function setGreeting(string memory _greeting) external;\n// }\n\ncontract L1Contract {\n    address l1Messenger;\n    \n\n    constructor(address _l1Messenger) {\n      l1Messenger = _l1Messenger;\n    }\n\n    function sendMessage(uint256 _tokenId, address _to) payable public {\n      // uint256 _gasLimit = 100000;\n      // bytes memory _message = abi.encodeWithSelector(\n      //   IL2Contract.setGreeting.selector,\n      //   _tokenId,\n      //   _to\n      // );\n\n      IScrollMessenger(l1Messenger).sendMessage{ value: msg.value }(_tokenId, _to); \n    }\n}\n"
+    },
+    "contracts/L2Contract.sol": {
+      "content": "//SPDX-License-Identifier: Unlicense\npragma solidity ^0.8.18;\n\nimport \"./IScrollMessenger.sol\";\n\ncontract L2Contract {\n    string private greeting;\n    address l1Contract;\n    address l2Messenger;\n    uint256 public tokenId;\n    address public to;\n\n    event ReceiveMessage(\n        uint256 _tokentId,\n        address _to\n    );\n\n    constructor(address _l1Contract, address _l2Messenger) {\n      l1Contract = _l1Contract;\n      l2Messenger = _l2Messenger;\n    }\n\n    function greet() public view returns (string memory) {\n        return greeting;\n    }\n\n    function receiveMessage( uint256 _tokenId,address _to) public {\n        tokenId = _tokenId;\n        to = _to;\n        emit ReceiveMessage(_tokenId,_to);\n    }\n\n    function setGreeting(string memory _greeting) public {\n        require(msg.sender == l2Messenger);\n        require(l1Contract == IScrollMessenger(l2Messenger).xDomainMessageSender());\n        greeting = _greeting;\n    }\n}"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}
