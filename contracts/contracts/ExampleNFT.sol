@@ -13,11 +13,11 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 contract ExampleNFT is ERC721Enumerable, AccessControl {
     using Strings for uint256;
 
-
     constructor() ERC721("Grizzly", "GRZL") {}
 
-
-    function supportsInterface(bytes4 interfaceId)
+    function supportsInterface(
+        bytes4 interfaceId
+    )
         public
         view
         virtual

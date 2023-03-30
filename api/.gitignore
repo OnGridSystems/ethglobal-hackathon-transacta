@@ -3,5 +3,5 @@ cache/
 artifacts/
 *.iml
 *.pyc
-__pychache__/
+__pycache__/
 .idea/

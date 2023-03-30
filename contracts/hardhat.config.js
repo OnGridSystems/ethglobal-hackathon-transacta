@@ -1,7 +1,10 @@
 require("@nomicfoundation/hardhat-toolbox");
 require("@nomiclabs/hardhat-ethers");
 require("hardhat-deploy");
-require("dotenv").config()
+require("dotenv").config();
+
+const private_key = process.env["PRIVATE_KEY"]
+const api_key = process.env["API_KEY"]
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -21,13 +24,13 @@ module.exports = {
     },
   },
   networks: {
-      goerli: { 
-        url: "https://eth-goerli.g.alchemy.com/v2/tmn4Rf7lh4ezew016QX0cDPAmAKb2KBz",
-        accounts: [process.env.PRIVATE_KEY.toString()],
-        chainId: 5
-        },
-      },
-      etherscan: {
-        apiKey: `${process.env.API_KEY}`
-      }
-    };
+    goerli: {
+      url: "https://eth-goerli.g.alchemy.com/v2/tmn4Rf7lh4ezew016QX0cDPAmAKb2KBz",
+      accounts: [private_key],
+      chainId: 5,
+    },
+  },
+  etherscan: {
+    apiKey: api_key,
+  },
+};

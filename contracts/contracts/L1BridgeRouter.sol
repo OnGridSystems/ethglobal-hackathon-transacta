@@ -10,7 +10,6 @@ import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
  * @author OnGrid Dev Team
  **/
 contract L1BridgeRouter is IERC721Receiver {
-
     IERC721 public token;
 
     event BridgeToL2(address from, uint256 networkId, uint256 tokenId);
@@ -40,7 +39,12 @@ contract L1BridgeRouter is IERC721Receiver {
         // todo: emit event
     }
 
-    function onERC721Received(address, address, uint256, bytes calldata) public override returns (bytes4) {
-            return this.onERC721Received.selector;
+    function onERC721Received(
+        address,
+        address,
+        uint256,
+        bytes calldata
+    ) public override returns (bytes4) {
+        return this.onERC721Received.selector;
     }
 }
