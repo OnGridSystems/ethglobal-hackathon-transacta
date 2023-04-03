@@ -2,30 +2,18 @@
 
 pragma solidity ^0.8.18;
 
-import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 /**
  * @title L1Token
  * @author OnGrid Dev Team
  **/
-contract ExampleNFT is ERC721Enumerable, AccessControl {
+contract L2Token is ERC721Enumerable, Ownable {
     using Strings for uint256;
 
-    constructor() ERC721("Grizzly", "GRZL") {}
-
-    function supportsInterface(
-        bytes4 interfaceId
-    )
-        public
-        view
-        virtual
-        override(ERC721Enumerable, AccessControl)
-        returns (bool)
-    {
-        return super.supportsInterface(interfaceId);
-    }
+    constructor() ERC721("BridgedGrizzly", "BRGRZL") {}
 
     /**
      * @dev Mints a specific to the given address
@@ -34,5 +22,9 @@ contract ExampleNFT is ERC721Enumerable, AccessControl {
     function mint(address to) public {
         uint256 mintIndex = totalSupply();
         _safeMint(to, mintIndex);
+    }
+
+    function burn(uint256 id) public {
+        _burn(id);
     }
 }

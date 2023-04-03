@@ -8,7 +8,7 @@ describe("L1BridgeRouter", () => {
   beforeEach(async () => {
     this.signers = await ethers.getSigners();
     this.deployer = this.signers[0];
-    this.tokenFactory = await ethers.getContractFactory("ExampleNFT");
+    this.tokenFactory = await ethers.getContractFactory("L1Token");
     this.token = await this.tokenFactory.deploy();
     this.bridgeFactory = await ethers.getContractFactory("L1BridgeRouter");
     this.bridge = await this.bridgeFactory.deploy(this.token.address);
@@ -35,7 +35,7 @@ describe("L1BridgeRouter", () => {
             await expect(bridgeTx)
                 .to
                 .emit(this.bridge, "BridgeToL2")
-                .withArgs(this.deployer.address, L2_NETWORK_ID, 1);
+                .withArgs(this.deployer.address, L2_NETWORK_ID, TOKEN_ID);
         })
 
     describe("Unbridge back from L2", () => {

@@ -1,11 +1,10 @@
 import os
  
-LANGS = ["Python", "Solidity", "Javascript", "Typescript"]
+LANGS = ["Python", "Solidity", "JavaScript", "TypeScript"]
 DIRS = [
     "api",
     "app",
     "contracts",
-    "ingress",
     "polybase_integration"
 ]
 EXCLUDED_DIRS = [
