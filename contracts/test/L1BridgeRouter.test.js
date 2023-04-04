@@ -8,7 +8,7 @@ describe("L1BridgeRouter", () => {
   beforeEach(async () => {
     this.signers = await ethers.getSigners();
     this.deployer = this.signers[0];
-    this.tokenFactory = await ethers.getContractFactory("ExampleNFT");
+    this.tokenFactory = await ethers.getContractFactory("L1Token");
     this.token = await this.tokenFactory.deploy();
     this.bridgeFactory = await ethers.getContractFactory("L1BridgeRouter");
     this.bridge = await this.bridgeFactory.deploy(this.token.address);
@@ -19,15 +19,24 @@ describe("L1BridgeRouter", () => {
     expect(await this.bridge.token()).eq(this.token.address);
   });
 
-  describe("Bridge to L2", () => {
-    beforeEach(async () => {
-      await this.token.approve(this.bridge.address, TOKEN_ID);
-      await this.bridge.bridgeToL2(L2_NETWORK_ID, TOKEN_ID);
-    });
+    describe("Bridge to L2", () => {
+        let bridgeTx;
 
-    it("token got withdrawn to BridgeRouter", async () => {
-      expect(await this.token.ownerOf(TOKEN_ID)).eq(this.bridge.address);
-    });
+        beforeEach(async () => {
+            await this.token.approve(this.bridge.address, TOKEN_ID);
+            bridgeTx = await this.bridge.bridgeToL2(L2_NETWORK_ID, TOKEN_ID);
+        });
+
+        it("token got withdrawn to BridgeRouter", async () => {
+            expect(await this.token.ownerOf(TOKEN_ID)).eq(this.bridge.address);
+        });
+
+        it("should call event BridgeToL2", async () => {
+            await expect(bridgeTx)
+                .to
+                .emit(this.bridge, "BridgeToL2")
+                .withArgs(this.deployer.address, L2_NETWORK_ID, TOKEN_ID);
+        })
 
     describe("Unbridge back from L2", () => {
       beforeEach(async () => {
