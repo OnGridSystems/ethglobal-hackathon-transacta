@@ -1,0 +1,38 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/L1Contract.sol": {
+      "content": "//SPDX-License-Identifier: Unlicense\npragma solidity ^0.8.18;\n\ncontract L1Contract {\n    address l2Messenger = 0xb75d7e84517e1504C151B270255B087Fd746D34C;\n\n    event SendMessage(\n        uint256 tokenId, \n        address _to\n    );\n\n    constructor() {}\n\n    function sendMessage(uint256 _tokenId) public {\n        emit SendMessage(_tokenId, l2Messenger);\n    }\n}"
+    },
+    "contracts/L2Contract.sol": {
+      "content": "//SPDX-License-Identifier: Unlicense\npragma solidity ^0.8.18;\n\ncontract L2Contract {\n    \n    event ReceivedMessage(\n        uint256 _tokentId,\n        address _to\n    );\n\n    constructor() {}\n    \n\n    function receiveMessage( uint256 _tokenId,address _to) public {\n       emit ReceivedMessage(_tokenId,_to);\n    }\n}"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}

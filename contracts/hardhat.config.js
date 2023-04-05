@@ -2,9 +2,10 @@ require("@nomicfoundation/hardhat-toolbox");
 require("@nomiclabs/hardhat-ethers");
 require("hardhat-deploy");
 require("dotenv").config();
+require("./tasks/task");
 
-const private_key = process.env["PRIVATE_KEY"]
-const api_key = process.env["API_KEY"]
+const private_key = process.env["PRIVATE_KEY"];
+const api_key = process.env["API_KEY"];
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -23,14 +24,20 @@ module.exports = {
       default: 0,
     },
   },
+
   networks: {
     goerli: {
       url: "https://eth-goerli.g.alchemy.com/v2/tmn4Rf7lh4ezew016QX0cDPAmAKb2KBz",
       accounts: [private_key],
       chainId: 5,
     },
+    scrollAlpha: {
+      url: "https://alpha-rpc.scroll.io/l2" || "",
+      accounts: [private_key],
+      chainId: 534353,
+    },
   },
-  etherscan: {
-    apiKey: api_key,
-  },
+  // etherscan: {
+  //   apiKey: api_key,
+  // },
 };
